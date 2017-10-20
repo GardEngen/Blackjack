@@ -37,8 +37,7 @@
         app:layout_constraintTop_toTopOf="@+id/leftPanel"
         app:layout_constraintLeft_toLeftOf="@+id/leftPanel"
         app:layout_constraintRight_toRightOf="@id/leftPanel"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintHorizontal_bias="0.0"/>
+        android:background="@color/colorPrimaryDark"/>
 
     <Button
         android:id="@+id/doubleButton"
