@@ -7,7 +7,7 @@
 
 
 
-   <view
+   <View
         android:id="@+id/leftPanel"
         android:layout_width="100dp"
         android:layout_height="200dp"
@@ -17,7 +17,7 @@
         app:layout_constraintVertical_bias="0.9"
         />
 
-    <view
+    <View
         android:id="@+id/rightPanel"
         android:layout_width="100dp"
         android:layout_height="200dp"

@@ -11,9 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val splitButton = findViewById(R.id.splitButton)
-
-
+        val splitButton = findViewById(R.id.splitButton) as Button
+        
         splitButton.setOnClickListener{
             println("hei")
         }
