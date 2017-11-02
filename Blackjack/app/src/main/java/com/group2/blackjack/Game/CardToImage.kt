@@ -9,15 +9,7 @@ import com.group2.blackjack.Enums.Color
 
 fun getImage(card: Card):String{
     var path = "app/res/drawable/";
-
-    when(card.color){
-        Color.CLUBS     -> path += "c"
-        Color.DIAMONDS  -> path += "d"
-        Color.SPADES    -> path += "s"
-        Color.HEARTHS   -> path += "h"
-    }
-
+    path += card.color.toString()
     path += card.value
     return path;
-
 }
