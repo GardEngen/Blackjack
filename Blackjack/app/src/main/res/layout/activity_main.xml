@@ -76,6 +76,15 @@
         android:background="@color/colorPrimaryDark"
         />
 
+    <ImageView
+     android:id="@+id/leftCard"
+     android:layout_width="60dp"
+     android:layout_height="wrap_content"
+     app:layout_constraintLeft_toRightOf="@id/leftPanel"
+     app:layout_constraintRight_toLeftOf="@id/rightPanel"
+     android:src="@drawable/c1"
+     />
+
     <TextView
         android:id="@+id/balanceText"
         android:layout_width="wrap_content"
@@ -85,7 +94,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.95"
-
         android:text="Balance: 4000$"
         />
 
