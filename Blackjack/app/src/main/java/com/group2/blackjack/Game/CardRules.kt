@@ -15,6 +15,15 @@ class CardRules {
         return (playerScore >= 21 || dealerScore >= 21)
     }
 
+    /**
+     * returns true if the player wins, false if dealer wins
+     */
+    fun getWinner(player : List<Card>, dealer : List<Card>): Boolean{
+        val playerScore = getScore(player)
+        val dealerScore = getScore(dealer)
+        return playerScore > dealerScore
+    }
+
     private fun getScore(hand : List<Card>): Int{
         var sum = 0
         for(c : Card in hand){

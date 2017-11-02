@@ -16,19 +16,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        game = Game()
-        game.run()
-
         splitButton = findViewById(R.id.splitButton) as Button
-
         buttonAction();
 
+        game = Game()
+        game.run()
     }
 
     private fun buttonAction() {
         splitButton.setOnClickListener{
             game.split()
-
         }
+
     }
 }
