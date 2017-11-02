@@ -2,7 +2,9 @@ package com.group2.blackjack.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.group2.blackjack.Entities.Deck
 import com.group2.blackjack.Game.Game
@@ -14,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hitButton : Button
     private lateinit var balance : TextView
     private lateinit var game : Game
+    private lateinit var pic : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +25,10 @@ class MainActivity : AppCompatActivity() {
         splitButton = findViewById(R.id.splitButton) as Button
         hitButton = findViewById(R.id.hitButton) as Button
         balance = findViewById(R.id.balanceText) as TextView
+        pic = findViewById(R.id.leftCard) as ImageView
         buttonAction()
 
-        game = Game(balance)
+        game = Game(balance, pic)
         game.run()
     }
 
