@@ -1,6 +1,8 @@
 package com.group2.blackjack.Game
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import android.widget.TextView
 import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Entities.Deck
@@ -9,8 +11,9 @@ import com.group2.blackjack.Entities.Table
 /**
  * Created by raugz on 11/2/2017.
  */
-class Game constructor(tv : TextView){
+class Game constructor(tv : TextView, c : ImageView){
     var balanceText = tv
+    var card = c
     lateinit var rules : CardRules
     lateinit var table : Table
     lateinit var deck : Deck
@@ -22,6 +25,7 @@ class Game constructor(tv : TextView){
 
     private fun startRound(){
         deck.reShuffle()
+        //card.setImageDrawable(Drawable.createFromPath(getImage(table.player[0])))
 
         //init hands 2 cards each
         for(i in 0..3){ // draws 0 to 3, 4 cards
