@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         game = Game()
+        game.run()
 
         splitButton = findViewById(R.id.splitButton) as Button
 
