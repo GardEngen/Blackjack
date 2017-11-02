@@ -6,16 +6,14 @@ package com.group2.blackjack.Enums
 enum class Color {
     SPADES, DIAMONDS, HEARTHS, CLUBS;
 
-    override fun toString(): String{
+     fun toChar(): Char{
         return when(this){
-            Color.CLUBS     -> "c"
-            Color.DIAMONDS  -> "d"
-            Color.SPADES    -> "s"
-            Color.HEARTHS   -> "h"
+            Color.CLUBS     -> 'c'
+            Color.DIAMONDS  -> 'd'
+            Color.SPADES    -> 's'
+            Color.HEARTHS   -> 'h'
         }
     }
-
-
 }
 
 

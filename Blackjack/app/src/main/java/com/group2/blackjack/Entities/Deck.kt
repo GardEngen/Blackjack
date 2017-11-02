@@ -9,6 +9,9 @@ import java.util.*
 class Deck constructor(){
     var cards = ArrayList<Card>()
 
+    init {
+        reShuffle()
+    }
 
     fun reShuffle(){
         cards.clear()
@@ -21,9 +24,6 @@ class Deck constructor(){
         shuffle()
     }
 
-    init {
-        reShuffle()
-    }
 
     fun shuffle() {
         Collections.shuffle(cards)
