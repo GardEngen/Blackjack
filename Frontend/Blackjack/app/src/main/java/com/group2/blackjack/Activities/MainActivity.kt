@@ -2,11 +2,10 @@ package com.group2.blackjack.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import com.group2.blackjack.Entities.Deck
 import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 
@@ -29,9 +28,10 @@ class MainActivity : AppCompatActivity() {
         buttonAction()
 
 
-
+        //TODO add prompt for bet input
         game = Game(balance, pic)
-        game.run()
+        game.initGame()
+        game.startRound()
     }
 
     private fun buttonAction() {
@@ -39,9 +39,12 @@ class MainActivity : AppCompatActivity() {
             game.split()
         }
         hitButton.setOnClickListener{
-
-            game.hit() // TODO return drew card
-            //TODO dealer hit
+            var cardLayout = findViewById(R.id.cardLayout) as LinearLayout
+            val playerDraw = game.playerHit()
+            val dealerDraw = game.dealerHit() // can be null
+            var imgView = ImageView(this)
+            imgView.setImageResource(R.drawable.c6)
+            cardLayout.addView(imgView)
         }
 
     }

@@ -15,18 +15,16 @@ class Game constructor(tv : TextView, c : ImageView){
     var uriPath = "@drawable/"
     var balanceText = tv
     var card = c
+    private var roundover = false
     lateinit var rules : CardRules
     lateinit var table : Table
     lateinit var deck : Deck
 
-    fun run(){
-        initGame()
-        startRound()
-    }
 
-    private fun startRound(){
+    fun startRound(){
+        roundover = false
         deck.reShuffle()
-        //card.setImageDrawable(Drawable.createFromPath(getImage(table.player[0])))
+        var cardList = ArrayList<Card>()
 
         //init hands 2 cards each
         for(i in 0..3){ // draws 0 to 3, 4 cards
@@ -44,7 +42,7 @@ class Game constructor(tv : TextView, c : ImageView){
         balanceText.text = table.money.toString()
     }
 
-    private fun initGame(){
+    fun initGame(){
         table = Table(500)
         rules = CardRules()
         deck = Deck()
@@ -63,31 +61,44 @@ class Game constructor(tv : TextView, c : ImageView){
     /**
      * checks the cards, and determined if there is a winner
      */
-    private fun checkOver(player : List<Card>, dealer : List<Card>): Boolean {
-        return rules.check21(player, dealer)
+    private fun checkOver(): Boolean {
+        if (rules.check21(table.player, table.dealer)){ // TODO check correct
+            roundover = true
+            return true
+        }
+        return false
     }
 
     fun newGame(){
-
+        //unused
     }
 
-    fun hit(){
+    fun playerHit(): Card {
         //println("hittttttt")
         val drewCard = deck.draw()
         table.dealCard(true, drewCard)
-        if (checkOver(table.player, table.dealer)){ // true = someone has over 21 TODO fix real rules
+        if (checkOver()){ // true = someone has over 21 TODO fix real rules
             endRound(rules.getWinner(table.player, table.dealer)) // true = player won
         }
-        else{ // dealers turn
+        return drewCard
+    }
+
+    fun dealerHit(): Card? {
+        if (!roundover){
             if(rules.getScore(table.dealer) < 17){
-                table.dealCard(false, deck.draw())
+                val drewCard = deck.draw()
+                table.dealCard(false, drewCard)
+                if (checkOver()){ // true = someone has over 21 TODO fix real rules
+                    endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+                }
+                return drewCard
             }
         }
-
+        return null
     }
 
     fun stand(){
-        if (checkOver(table.player, table.dealer)){ // true = someone has over 21 TODO fix real rules
+        if (checkOver()){ // true = someone has over 21 TODO fix real rules
             endRound(rules.getWinner(table.player, table.dealer)) // true = player won
         }
         else{

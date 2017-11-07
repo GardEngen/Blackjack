@@ -82,4 +82,10 @@
         app:layout_constraintVertical_bias="0.95"
         android:text="Balance: 4000$"/>
 
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:id="@+id/cardLayout"
+      android:orientation="horizontal">
+  </LinearLayout>
 </android.support.constraint.ConstraintLayout>
