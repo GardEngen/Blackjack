@@ -12,6 +12,7 @@ import com.group2.blackjack.Entities.Table
  * Created by raugz on 11/2/2017.
  */
 class Game constructor(tv : TextView, c : ImageView){
+    var uriPath = "@drawable/"
     var balanceText = tv
     var card = c
     lateinit var rules : CardRules
@@ -72,7 +73,8 @@ class Game constructor(tv : TextView, c : ImageView){
 
     fun hit(){
         //println("hittttttt")
-        table.dealCard(true, deck.draw())
+        val drewCard = deck.draw()
+        table.dealCard(true, drewCard)
         if (checkOver(table.player, table.dealer)){ // true = someone has over 21 TODO fix real rules
             endRound(rules.getWinner(table.player, table.dealer)) // true = player won
         }
@@ -81,6 +83,7 @@ class Game constructor(tv : TextView, c : ImageView){
                 table.dealCard(false, deck.draw())
             }
         }
+
     }
 
     fun stand(){

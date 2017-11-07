@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         pic = findViewById(R.id.leftCard) as ImageView
         buttonAction()
 
+
+
         game = Game(balance, pic)
         game.run()
     }
@@ -37,7 +39,9 @@ class MainActivity : AppCompatActivity() {
             game.split()
         }
         hitButton.setOnClickListener{
-            game.hit()
+
+            game.hit() // TODO return drew card
+            //TODO dealer hit
         }
 
     }
