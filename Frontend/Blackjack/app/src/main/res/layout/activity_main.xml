@@ -65,6 +65,13 @@
         app:layout_constraintBottom_toBottomOf="@id/panel"
         android:layout_margin="10dp"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        app:layout_constraintTop_toBottomOf="@id/panel"
+        android:id="@+id/startButton"
+        app:layout_constraintLeft_toRightOf="@id/balanceText"/>
 
     <ImageView
         android:id="@+id/leftCard"
@@ -86,6 +93,15 @@
       android:layout_width="match_parent"
       android:layout_height="100dp"
       android:id="@+id/cardLayout"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toTopOf="@id/panel">
+  </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:id="@+id/dealerCardsLayout"
+      android:orientation="horizontal"
+      app:layout_constraintTop_toTopOf="parent">
   </LinearLayout>
 </android.support.constraint.ConstraintLayout>

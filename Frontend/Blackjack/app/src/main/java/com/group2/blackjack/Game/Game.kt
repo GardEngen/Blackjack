@@ -11,10 +11,9 @@ import com.group2.blackjack.Entities.Table
 /**
  * Created by raugz on 11/2/2017.
  */
-class Game constructor(tv : TextView, c : ImageView){
+class Game constructor(tv : TextView){
     var uriPath = "@drawable/"
     var balanceText = tv
-    var card = c
     private var roundover = false
     lateinit var rules : CardRules
     lateinit var table : Table
@@ -24,15 +23,19 @@ class Game constructor(tv : TextView, c : ImageView){
     fun startRound(){
         roundover = false
         deck.reShuffle()
-        var cardList = ArrayList<Card>()
+        table.flushHands()
 
         //init hands 2 cards each
         for(i in 0..3){ // draws 0 to 3, 4 cards
             if (i%2 == 0){
-                table.dealCard(true, deck.draw())
+                val drew = deck.draw()
+                table.dealCard(true, drew)
+                println("Player card added: " + drew.color + drew.value)
             }
             else{ // i%2 == 1
-                table.dealCard(false, deck.draw())
+                val drew = deck.draw()
+                table.dealCard(false, drew)
+                println("Dealer card added: " + drew.color + drew.value)
             }
         }
 
@@ -53,9 +56,8 @@ class Game constructor(tv : TextView, c : ImageView){
             val bet = table.currentBet
             table.addMoney(bet*2)
         }
-        table.flushHands()
         //Thread.sleep(2000) // allow user to see result
-        startRound()
+        //startRound()
     }
 
     /**
@@ -73,14 +75,17 @@ class Game constructor(tv : TextView, c : ImageView){
         //unused
     }
 
-    fun playerHit(): Card {
-        //println("hittttttt")
-        val drewCard = deck.draw()
-        table.dealCard(true, drewCard)
-        if (checkOver()){ // true = someone has over 21 TODO fix real rules
-            endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+    fun playerHit(): Card? {
+        if (!roundover){
+            //println("hittttttt")
+            val drewCard = deck.draw()
+            table.dealCard(true, drewCard)
+            if (checkOver()){ // true = someone has over 21 TODO fix real rules
+                endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+            }
+            return drewCard
         }
-        return drewCard
+        return null
     }
 
     fun dealerHit(): Card? {
@@ -98,16 +103,18 @@ class Game constructor(tv : TextView, c : ImageView){
     }
 
     fun stand(){
-        if (checkOver()){ // true = someone has over 21 TODO fix real rules
-            endRound(rules.getWinner(table.player, table.dealer)) // true = player won
-        }
-        else{
-            val lessThanPlayer = rules.getScore(table.dealer) < rules.getScore(table.player)
-            val under21 = rules.getScore(table.dealer) < 21
-            while(lessThanPlayer || under21){
-                table.dealCard(false, deck.draw())
+        if (!roundover){
+            if (checkOver()){ // true = someone has over 21 TODO fix real rules
+                endRound(rules.getWinner(table.player, table.dealer)) // true = player won
             }
-            endRound(rules.getWinner(table.player, table.dealer))
+            else{
+                val lessThanPlayer = rules.getScore(table.dealer) < rules.getScore(table.player)
+                val under21 = rules.getScore(table.dealer) < 21
+                while(lessThanPlayer || under21){
+                    table.dealCard(false, deck.draw())
+                }
+                endRound(rules.getWinner(table.player, table.dealer))
+            }
         }
     }
     //TODO future
