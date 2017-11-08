@@ -1,6 +1,7 @@
 package RestAPI
 
 import Entities.Highscore
+import Repository.HighscoreRepository
 import com.google.gson.Gson
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -21,66 +22,21 @@ import org.litote.kmongo.json
 
 fun Application.main() {
     val gson = Gson()
+    val highscoreRepo = HighscoreRepository()
 
-    val client = KMongo.createClient() //get com.mongodb.MongoClient new instance
-    val database = client.getDatabase("blackjackdb") //normal java driver usage
-    val collection = database.getCollection<Highscore>() //KMongo extension method
-
+    highscoreRepo.initDatabaseClient()
     install(DefaultHeaders)
     install(CallLogging)
     install(Routing) {
-        get("/") {
-
-            val doktor = Highscore("Gard", 400)
-            val json = gson.toJson(doktor)
-            call.respondText(json, ContentType.Application.Json)
-        }
 
         post("/postScore") {
-            println("JEG KOMMER INN HEEERRR")
             val highscore = gson.fromJson(call.request.receiveContent().readText(), Highscore::class.java)
-
-            val top10 = ArrayList<Highscore>()
-            collection.find().forEach { top10.add(it) }
-            if (top10.size == 0) {
-                //add score
-                println("Det finnes ingen item i liste")
-                collection.insertOne(highscore);
-                println("har lagt til " + highscore)
-            }
-
-            val sortedList = top10.sortedWith(compareBy { it.score })
-
-            for (item in sortedList) {
-                if (sortedList.size < 10) {
-                    println("Det er mindre enn 10 ")
-                    collection.insertOne(highscore);
-                    break
-
-                } else if (highscore.score >= item.score) {
-
-                    //add score
-                    println("score var større enn " + item.score)
-                    collection.insertOne(highscore);
-                    println("har lagt til " + highscore)
-                    //delete lowest score
-                    println("skal slette : " + sortedList.first().json)
-                    collection.deleteOne(sortedList.first().json)
-                    println("stopper loop")
-                    break
-                } else {
-                    println("du har ikke høy nok score for å komme på toplisten")
-                    break
-                }
-            }
+            highscoreRepo.postHighScore(highscore)
         }
 
         get("/top10") {
-
-            val top10 = ArrayList<Highscore>()
-            collection.find().forEach { top10.add(it) }
-            val sortedList = top10.sortedWith(compareBy { it.score })
-            call.respondText(gson.toJson(sortedList), ContentType.Application.Json)
+            val top10 = highscoreRepo.getTop10()
+            call.respondText(gson.toJson(top10), ContentType.Application.Json)
         }
 
     }
