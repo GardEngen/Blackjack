@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.group2.blackjack.Entities.Card
+import com.group2.blackjack.Entities.Table
 import com.group2.blackjack.Enums.Color
 import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
@@ -57,31 +58,34 @@ class MainActivity : AppCompatActivity() {
             val dealerLayout = findViewById(R.id.dealerCardsLayout) as LinearLayout
             dealerLayout.removeAllViews()
             game.startRound()
-
             val table = game.table
+
             //TODO clean this up, add dealer cards, have initial cards show
             for(i in 0..1){
-                val cardString = table.player[i].color.toChar().toString() + table.player[i].value
-                var imgView = ImageView(this)
-                imgView.x = (i*100).toFloat()
-                val id = resources.getIdentifier(cardString, "drawable", packageName)
-
-                imgView.setImageResource(id)
-                cardLayout.addView(imgView)
+                setImageToScreen(table.player, i, cardLayout, true)
             }
 
-            //dealer
-            //table.dealer[0] = Card(Color.HEARTHS, 9)
             for(i in 0..1){
-                val cardString = table.dealer[i].color.toChar().toString() + table.dealer[i].value
-                var imgView = ImageView(this)
-                imgView.x += (i*100).toFloat()
-                val id = resources.getIdentifier(cardString, "drawable", packageName)
-                imgView.setImageResource(id)
-                dealerLayout.addView(imgView)
+                setImageToScreen(table.dealer, i, dealerLayout, false)
             }
 
         }
+    }
+
+    private fun setImageToScreen(cards : List<Card>, i: Int, layout: LinearLayout, player : Boolean) {
+        val cardString : String
+        if(player){
+            cardString = cards[i].color.toChar().toString() + cards[i].value
+        }
+        else{
+            cardString = cards[i].color.toChar().toString() + cards[i].value
+        }
+        var imgView = ImageView(this)
+        imgView.x = (i * 100).toFloat()
+        val id = resources.getIdentifier(cardString, "drawable", packageName)
+
+        imgView.setImageResource(id)
+        layout.addView(imgView)
     }
 
 }
