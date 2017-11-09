@@ -57,7 +57,6 @@ fun Application.main() {
         get("/top10") {
             val top10 = highscoreRepo.getTop10()
             call.respondText(gson.toJson(top10), ContentType.Application.Json)
-            //call.respond(HttpStatusCode.OK,"Server successfully returned top 10")
         }
     }
 }
