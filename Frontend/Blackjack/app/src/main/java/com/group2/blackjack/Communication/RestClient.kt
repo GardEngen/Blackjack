@@ -1,8 +1,9 @@
 package com.group2.blackjack.Communication
 
-import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
-import com.github.kittinunf.result.getAs
+import org.json.JSONObject
 
 /**
  * Created by Gard on 09.11.2017.
@@ -12,27 +13,41 @@ class RestClient() {
     var port = "5000"
     var fullUrl = "http://" + ip + ":" + port + "/"
 
+    fun postScore(name: String, score: Int) {
+        val json = JSONObject()
+        json.put("name", name)
+        json.put("score", score)
 
-    fun postScore(){
-
+        Fuel.post(fullUrl + "postScore")
+                .header("Content-Type" to "application/json")
+                .body(json.toString())
+                .response { request, response, result ->
+                    when (result) {
+                        is Result.Failure -> {
+                            val jsonInString = String(response.data)
+                            println("FAIL MESSAGEEEE::: " + jsonInString + response.responseMessage)
+                        }
+                        is Result.Success -> {
+                            val jsonInString = String(response.data)
+                            println("SUCCESS MESSAGEEEE::: " + jsonInString + response.responseMessage)
+                        }
+                    }
+                }
     }
 
-    fun getTop10(){
-        (fullUrl +"top10").httpGet().responseString { request, response, result ->
-            //do something with response
-            when (result) {
-                is Result.Failure -> {
-                    //error = result.getAs()
-                    val jsonInString = String(response.data)
-                    println("FAIL MESSAGEEEE::: " + jsonInString +  response.responseMessage)
+    fun getTop10() {
+        Fuel.get(fullUrl + "top10")
+                .responseJson { request, response, result ->
+                    when (result) {
+                        is Result.Failure -> {
+                            val jsonInString = response.data
+                            println("FAIL MESSAGEEEE::: " + jsonInString + response.responseMessage)
+                        }
+                        is Result.Success -> {
+                            val jsonInString = response.data
+                            println("SUCCESS MESSAGEEEE::: " + jsonInString + response.responseMessage)
+                        }
+                    }
                 }
-                is Result.Success -> {
-                    //val data = result.getAs()
-                    val jsonInString = String(response.data)
-                    println("SUCCESS MESSAGEEEE::: " + jsonInString +  response.responseMessage)
-                }
-            }
-        }
-
     }
 }
