@@ -38,22 +38,4 @@ class HighscoreRepository {
         }
         return top10;
     }
-
-    fun postHighScore(highscore: Highscore) {
-        val top10 = getTop10();
-        if (top10.size < 10 ) {
-            insertHighscore(highscore)
-        } else {
-            for (item in top10) {
-                if (highscore.score >= item.score) {
-                    insertHighscore(highscore);
-                    deleteHighscore(top10.first())
-                    break
-                } else {
-                    println("du har ikke høy nok score for å komme på toplisten")
-                    break
-                }
-            }
-        }
-    }
 }
