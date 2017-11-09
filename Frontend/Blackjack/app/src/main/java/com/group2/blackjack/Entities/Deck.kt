@@ -34,6 +34,10 @@ class Deck constructor(){
         return cards.removeAt(0)
     }
 
+    fun drawBackCard() : Card{
+        return Card(Color.CARDBACK,0)
+    }
+
 
 
 }

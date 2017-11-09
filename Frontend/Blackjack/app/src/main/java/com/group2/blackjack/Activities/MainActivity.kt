@@ -2,11 +2,8 @@ package com.group2.blackjack.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ViewGroup
 import android.widget.*
 import com.group2.blackjack.Entities.Card
-import com.group2.blackjack.Entities.Table
-import com.group2.blackjack.Enums.Color
 import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
@@ -20,6 +17,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var balance : TextView
     private lateinit var game : Game
     private lateinit var startButton : Button
+    private lateinit var cardLayout : RelativeLayout
+    private lateinit var dealerLayout : RelativeLayout
+
+    private var numbersOfPlayerHits : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         hitButton = findViewById(R.id.hitButton) as Button
         balance = findViewById(R.id.balanceText) as TextView
         startButton = findViewById(R.id.startButton) as Button
+        cardLayout = findViewById(R.id.playerCardsLayout) as RelativeLayout
+        dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
         buttonAction()
 
 
@@ -44,52 +47,53 @@ class MainActivity : AppCompatActivity() {
         splitButton.setOnClickListener{
             game.split()
         }
+        //HIT
         hitButton.setOnClickListener{
-            var cardLayout = findViewById(R.id.cardLayout) as RelativeLayout
             val playerDraw = game.playerHit() // can be null
-            val dealerDraw = game.dealerHit() // can be null
-            var imgView = ImageView(this)
-            imgView.setImageResource(R.drawable.c6)
-            cardLayout.addView(imgView)
+            if(playerDraw != null){
+                numbersOfPlayerHits++
+                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout,true)
+            }
         }
-
+        //START
         startButton.setOnClickListener{
-            var cardLayout = findViewById(R.id.cardLayout) as RelativeLayout
             cardLayout.removeAllViews()
-            val dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
             dealerLayout.removeAllViews()
+            numbersOfPlayerHits = 1
+
             game.startRound()
             val table = game.table
 
             //TODO clean this up, add dealer cards, have initial cards show
             for(i in 0..1){
-                setImageToScreen(table.player, i, cardLayout)
+                setImageToScreen(table.player, i, cardLayout,true)
             }
 
             for(i in 0..1){
-                setImageToScreen(table.dealer, i, dealerLayout)
+                //draw backside card
+                setImageToScreen(table.dealer, i, dealerLayout,true)
+                if(i == 1){
+                    setImageToScreen(table.dealer, i+1, dealerLayout,false)
+                }
             }
-
         }
     }
 
-    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout) {
+    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, moveCard: Boolean) {
         val cardString = cards[i].color.toChar().toString() + cards[i].value
-
         var imgView = ImageView(this)
-        //imgView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         val id = resources.getIdentifier(cardString, "drawable", packageName)
         imgView.setImageResource(id)
 
-        //TODO fix image positions
-        //imgView.layoutParams
-
         if(i > 0){
             var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-            params.addRule(RelativeLayout.RIGHT_OF, i-1)
+            if(moveCard){
+                params.leftMargin = (i*70)
+            } else {
+                params.leftMargin = ((i-1)*70)
+            }
             imgView.layoutParams = params
         }
-
         layout.addView(imgView, i)
     }
 }
