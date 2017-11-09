@@ -63,34 +63,32 @@ class MainActivity : AppCompatActivity() {
 
             //TODO clean this up, add dealer cards, have initial cards show
             for(i in 0..1){
-                setImageToScreen(table.player, i, cardLayout, true)
+                setImageToScreen(table.player, i, cardLayout)
             }
 
             for(i in 0..1){
-                setImageToScreen(table.dealer, i, dealerLayout, false)
+                setImageToScreen(table.dealer, i, dealerLayout)
             }
 
         }
     }
 
-    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, player : Boolean) {
-        val cardString : String = if(player){
-            cards[i].color.toChar().toString() + cards[i].value
-        }
-        else{
-            cards[i].color.toChar().toString() + cards[i].value
-        }
+    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout) {
+        val cardString = cards[i].color.toChar().toString() + cards[i].value
+
         var imgView = ImageView(this)
         //imgView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         val id = resources.getIdentifier(cardString, "drawable", packageName)
         imgView.setImageResource(id)
 
         //TODO fix image positions
-        imgView.layoutParams
+        //imgView.layoutParams
 
-        var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-        params.addRule(RelativeLayout.RIGHT_OF, i)
-        imgView.layoutParams = params
+        if(i > 0){
+            var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+            params.addRule(RelativeLayout.RIGHT_OF, i-1)
+            imgView.layoutParams = params
+        }
 
         layout.addView(imgView, i)
     }
