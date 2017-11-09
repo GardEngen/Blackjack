@@ -71,7 +71,7 @@
         android:text="Start"
         app:layout_constraintTop_toBottomOf="@id/panel"
         android:id="@+id/startButton"
-        app:layout_constraintLeft_toRightOf="@id/balanceText"/>
+        app:layout_constraintLeft_toRightOf="@+id/balanceText"/>
 
     <ImageView
         android:id="@+id/leftCard"
