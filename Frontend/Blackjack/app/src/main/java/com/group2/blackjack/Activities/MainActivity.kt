@@ -1,5 +1,6 @@
 package com.group2.blackjack.Activities
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var balance : TextView
     private lateinit var game : Game
     private lateinit var startButton : Button
+    private lateinit var standButton : Button
     private lateinit var cardLayout : RelativeLayout
     private lateinit var dealerLayout : RelativeLayout
 
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         hitButton = findViewById(R.id.hitButton) as Button
         balance = findViewById(R.id.balanceText) as TextView
         startButton = findViewById(R.id.startButton) as Button
+        standButton = findViewById(R.id.standButton) as Button
         cardLayout = findViewById(R.id.playerCardsLayout) as RelativeLayout
         dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
         buttonAction()
@@ -47,6 +50,11 @@ class MainActivity : AppCompatActivity() {
         splitButton.setOnClickListener{
             game.split()
         }
+        standButton.setOnClickListener {
+            val intent = Intent(this, HighscoreActivity::class.java)
+            startActivity(intent)
+        }
+
         //HIT
         hitButton.setOnClickListener{
             val playerDraw = game.playerHit() // can be null
