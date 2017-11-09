@@ -1,0 +1,18 @@
+Kotlin report:
+General kotlin:
+Less frameworks, we use some frameworks, and can draw comparisons from that
+Some kind of objective measurements on what's good/not good
+
+Prototype:
+Brief intro - functionality?
+Tools and framework
+implementation?
+onclicklistener kotlin implicit lambda compared to java
+TODO add more here
+
+Experiments
+some kind of data analysis
+some kind of subjective measurements
+documentation
+debug?
+libraries?

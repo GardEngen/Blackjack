@@ -55,6 +55,10 @@ class Game constructor(tv : TextView){
         if (winner){
             val bet = table.currentBet
             table.addMoney(bet*2)
+            println("Player won")
+        }
+        else{
+            println("Dealer won")
         }
         //Thread.sleep(2000) // allow user to see result
         //startRound()
@@ -62,9 +66,10 @@ class Game constructor(tv : TextView){
 
     /**
      * checks the cards, and determined if there is a winner
+     * should be called every time someone draws, to see if they pop
      */
     private fun checkOver(): Boolean {
-        if (rules.check21(table.player, table.dealer)){ // TODO check correct
+        if (rules.check21(table.player, table.dealer)){
             roundover = true
             return true
         }
@@ -80,7 +85,7 @@ class Game constructor(tv : TextView){
             //println("hittttttt")
             val drewCard = deck.draw()
             table.dealCard(true, drewCard)
-            if (checkOver()){ // true = someone has over 21 TODO fix real rules
+            if (checkOver()){
                 endRound(rules.getWinner(table.player, table.dealer)) // true = player won
             }
             return drewCard
@@ -89,6 +94,7 @@ class Game constructor(tv : TextView){
     }
 
     fun dealerHit(): Card? {
+        //TODO call round over in main activity? then start new round from there if we dont want user to do it manually
         if (!roundover){
             if(rules.getScore(table.dealer) < 17){
                 val drewCard = deck.draw()
@@ -102,20 +108,31 @@ class Game constructor(tv : TextView){
         return null
     }
 
-    fun stand(){
+    /**
+     * Player stands, dealer draws if rules are satisfied,
+     * returns the card drawn by dealer untill he stops drawing, then returns null
+     */
+    fun stand() : Card?{
         if (!roundover){
-            if (checkOver()){ // true = someone has over 21 TODO fix real rules
+            if (checkOver()){
                 endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+                return null
             }
             else{
-                val lessThanPlayer = rules.getScore(table.dealer) < rules.getScore(table.player)
                 val under21 = rules.getScore(table.dealer) < 21
-                while(lessThanPlayer || under21){
-                    table.dealCard(false, deck.draw())
+                val over16 = rules.getScore(table.dealer) > 16
+                val drew = deck.draw()
+                return if(under21 || over16){
+                    table.dealCard(false, drew)
+                    checkOver()
+                    drew
+                } else{
+                    endRound(rules.getWinner(table.player, table.dealer))
+                    null
                 }
-                endRound(rules.getWinner(table.player, table.dealer))
             }
         }
+        return null
     }
     //TODO future
     fun split(){

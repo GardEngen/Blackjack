@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var balance : TextView
     private lateinit var game : Game
     private lateinit var startButton : Button
+    private lateinit var standButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         splitButton = findViewById(R.id.splitButton) as Button
         hitButton = findViewById(R.id.hitButton) as Button
+        standButton = findViewById(R.id.standButton) as Button
         balance = findViewById(R.id.balanceText) as TextView
         startButton = findViewById(R.id.startButton) as Button
         buttonAction()
@@ -48,9 +50,25 @@ class MainActivity : AppCompatActivity() {
             var cardLayout = findViewById(R.id.cardLayout) as RelativeLayout
             val playerDraw = game.playerHit() // can be null
             val dealerDraw = game.dealerHit() // can be null
-            var imgView = ImageView(this)
-            imgView.setImageResource(R.drawable.c6)
-            cardLayout.addView(imgView)
+            println(playerDraw.toString())
+            //var imgView = ImageView(this)
+            if(playerDraw != null){
+                var cardNumber = 1
+                cardNumber++
+                setImageToScreen(game.table.player, cardNumber, cardLayout)
+            }
+            //imgView.setImageResource(R.drawable.c6)
+            //cardLayout.addView(imgView)
+        }
+        standButton.setOnClickListener{
+            var card = game.stand()
+            //TODO send card to GUI
+            while(card != null){
+                card = game.stand()
+                if (card != null){
+                    //TODO send to GUI
+                }
+            }
         }
 
         startButton.setOnClickListener{
@@ -74,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout) {
-        val cardString = cards[i].color.toChar().toString() + cards[i].value
+        val cardString = cards[i].toString()
 
         var imgView = ImageView(this)
         //imgView.scaleType = ImageView.ScaleType.CENTER_INSIDE
