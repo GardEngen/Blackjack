@@ -54,12 +54,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         //HIT
-        hitButton.setOnClickListener{
+        hitButton.setOnClickListener {
             val playerDraw = game.playerHit() // can be null
 
-            if(playerDraw != null){
+            if (playerDraw != null) {
                 numbersOfPlayerHits++
-                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout,true)
+                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout, true)
+            }
+        }
 
         standButton.setOnClickListener{
             var card = game.stand()
