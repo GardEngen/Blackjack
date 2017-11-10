@@ -9,8 +9,6 @@ import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
 
-
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var splitButton : Button
@@ -21,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var standButton : Button
     private lateinit var cardLayout : RelativeLayout
     private lateinit var dealerLayout : RelativeLayout
-
     private var numbersOfPlayerHits : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         splitButton = findViewById(R.id.splitButton) as Button
         hitButton = findViewById(R.id.hitButton) as Button
+        standButton = findViewById(R.id.standButton) as Button
         balance = findViewById(R.id.balanceText) as TextView
         startButton = findViewById(R.id.startButton) as Button
         standButton = findViewById(R.id.standButton) as Button
@@ -58,9 +56,20 @@ class MainActivity : AppCompatActivity() {
         //HIT
         hitButton.setOnClickListener{
             val playerDraw = game.playerHit() // can be null
+
             if(playerDraw != null){
                 numbersOfPlayerHits++
                 setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout,true)
+
+        standButton.setOnClickListener{
+            var card = game.stand()
+            //TODO send card to GUI
+            while(card != null){
+                card = game.stand()
+                if (card != null){
+                    //TODO send to GUI
+                }
+
             }
         }
         //START
@@ -88,7 +97,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, moveCard: Boolean) {
-        val cardString = cards[i].color.toChar().toString() + cards[i].value
+        val cardString = cards[i].toString()
+
         var imgView = ImageView(this)
         val id = resources.getIdentifier(cardString, "drawable", packageName)
         imgView.setImageResource(id)

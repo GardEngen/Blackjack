@@ -12,7 +12,7 @@ class CardRules {
     fun check21(player : List<Card>, dealer : List<Card>): Boolean {
         val playerScore = getScore(player)
         val dealerScore = getScore(dealer)
-        return (playerScore >= 21 || dealerScore > 21)
+        return (playerScore >= 21 || dealerScore >= 21)
     }
 
     /**
@@ -21,14 +21,22 @@ class CardRules {
     fun getWinner(player : List<Card>, dealer : List<Card>): Boolean{
         val playerScore = getScore(player)
         val dealerScore = getScore(dealer)
+        if(playerScore > 21){
+            return false
+        }
+        if (dealerScore > 21){
+            return true
+        }
+        //TODO fix playerscore = dealerscore push
         return playerScore > dealerScore
     }
 
     fun getScore(hand : List<Card>): Int{
-        var sum = 0
-        for(c : Card in hand){
-            sum += c.value
+        return hand.sumBy {
+            if (it.value <= 10) it.value
+            else{
+                10
+            }
         }
-        return sum
     }
 }
