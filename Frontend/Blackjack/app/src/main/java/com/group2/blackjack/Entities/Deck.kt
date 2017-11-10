@@ -30,7 +30,12 @@ class Deck constructor(){
     }
 
     fun draw() : Card{
+        //TODO set image view
         return cards.removeAt(0)
+    }
+
+    fun drawBackCard() : Card{
+        return Card(Color.CARDBACK,0)
     }
 
 

@@ -11,29 +11,35 @@ import com.group2.blackjack.Entities.Table
 /**
  * Created by raugz on 11/2/2017.
  */
-class Game constructor(tv : TextView, c : ImageView){
+class Game constructor(tv : TextView){
+    var uriPath = "@drawable/"
     var balanceText = tv
-    var card = c
+    private var roundover = false
     lateinit var rules : CardRules
     lateinit var table : Table
     lateinit var deck : Deck
 
-    fun run(){
-        initGame()
-        startRound()
-    }
 
-    private fun startRound(){
+    fun startRound(){
+        roundover = false
         deck.reShuffle()
-        //card.setImageDrawable(Drawable.createFromPath(getImage(table.player[0])))
+        table.flushHands()
+
 
         //init hands 2 cards each
         for(i in 0..3){ // draws 0 to 3, 4 cards
             if (i%2 == 0){
-                table.dealCard(true, deck.draw())
-            }
-            else{ // i%2 == 1
-                table.dealCard(false, deck.draw())
+                val drew = deck.draw()
+                table.dealCard(true, drew)
+            } else { // i%2 == 1
+                val drew = deck.draw()
+
+                table.dealCard(false, drew)
+
+                //back card
+                if(i == 3){
+                    table.dealCard(false, deck.drawBackCard())
+                }
             }
         }
 
@@ -43,7 +49,7 @@ class Game constructor(tv : TextView, c : ImageView){
         balanceText.text = table.money.toString()
     }
 
-    private fun initGame(){
+    fun initGame(){
         table = Table(500)
         rules = CardRules()
         deck = Deck()
@@ -53,48 +59,83 @@ class Game constructor(tv : TextView, c : ImageView){
         if (winner){
             val bet = table.currentBet
             table.addMoney(bet*2)
+            println("Player won")
         }
-        table.flushHands()
+        else{
+            println("Dealer won")
+        }
         //Thread.sleep(2000) // allow user to see result
-        startRound()
+        //startRound()
     }
 
     /**
      * checks the cards, and determined if there is a winner
+     * should be called every time someone draws, to see if they pop
      */
-    private fun checkOver(player : List<Card>, dealer : List<Card>): Boolean {
-        return rules.check21(player, dealer)
+    private fun checkOver(): Boolean {
+        if (rules.check21(table.player, table.dealer)){
+            roundover = true
+            return true
+        }
+        return false
     }
 
     fun newGame(){
-
+        //unused
     }
 
-    fun hit(){
-        //println("hittttttt")
-        table.dealCard(true, deck.draw())
-        if (checkOver(table.player, table.dealer)){ // true = someone has over 21 TODO fix real rules
-            endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+    fun playerHit(): Card? {
+        if (!roundover){
+            val drewCard = deck.draw()
+            table.dealCard(true, drewCard)
+            if (checkOver()){
+                endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+            }
+            return drewCard
         }
-        else{ // dealers turn
+        return null
+    }
+
+    fun dealerHit(): Card? {
+        //TODO call round over in main activity? then start new round from there if we dont want user to do it manually
+        if (!roundover){
             if(rules.getScore(table.dealer) < 17){
-                table.dealCard(false, deck.draw())
+                val drewCard = deck.draw()
+                table.dealCard(false, drewCard)
+                if (checkOver()){ // true = someone has over 21 TODO fix real rules
+                    endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+                }
+                return drewCard
             }
         }
+        return null
     }
 
-    fun stand(){
-        if (checkOver(table.player, table.dealer)){ // true = someone has over 21 TODO fix real rules
-            endRound(rules.getWinner(table.player, table.dealer)) // true = player won
-        }
-        else{
-            val lessThanPlayer = rules.getScore(table.dealer) < rules.getScore(table.player)
-            val under21 = rules.getScore(table.dealer) < 21
-            while(lessThanPlayer || under21){
-                table.dealCard(false, deck.draw())
+    /**
+     * Player stands, dealer draws if rules are satisfied,
+     * returns the card drawn by dealer untill he stops drawing, then returns null
+     */
+    fun stand() : Card?{
+        if (!roundover){
+            if (checkOver()){
+                endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+                return null
             }
-            endRound(rules.getWinner(table.player, table.dealer))
+            else{
+                val under21 = rules.getScore(table.dealer) < 21
+                val over16 = rules.getScore(table.dealer) > 16
+                val drew = deck.draw()
+                return if(under21 || over16){
+                    table.dealCard(false, drew)
+                    checkOver()
+                    drew
+                } else{
+                    endRound(rules.getWinner(table.player, table.dealer))
+                    null
+                }
+            }
         }
+        return null
     }
     //TODO future
     fun split(){

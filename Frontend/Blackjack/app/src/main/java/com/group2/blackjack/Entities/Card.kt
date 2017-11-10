@@ -9,4 +9,10 @@ class Card constructor(color: Color, value: Int){
     val color = color
     val value = value
 
+
+
+    override fun toString(): String{
+        return "" + color.toChar() + value;
+    }
+
 }

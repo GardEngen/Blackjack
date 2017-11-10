@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -65,13 +66,13 @@
         app:layout_constraintBottom_toBottomOf="@id/panel"
         android:layout_margin="10dp"
         />
-
-    <ImageView
-        android:id="@+id/leftCard"
-        android:layout_width="60dp"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/c1"
-       />
+        android:text="Start"
+        app:layout_constraintTop_toBottomOf="@id/panel"
+        android:id="@+id/startButton"
+        app:layout_constraintLeft_toRightOf="@+id/balanceText"/>
 
     <TextView
         android:id="@+id/balanceText"
@@ -82,4 +83,19 @@
         app:layout_constraintVertical_bias="0.95"
         android:text="Balance: 4000$"/>
 
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:id="@+id/playerCardsLayout"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toTopOf="@id/panel">
+  </RelativeLayout>
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:id="@+id/dealerCardsLayout"
+      android:orientation="horizontal"
+      app:layout_constraintTop_toTopOf="parent">
+  </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
