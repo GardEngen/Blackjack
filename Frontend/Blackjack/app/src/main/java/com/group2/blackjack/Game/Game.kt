@@ -35,11 +35,6 @@ class Game constructor(tv : TextView){
                 val drew = deck.draw()
 
                 table.dealCard(false, drew)
-
-                //back card
-                if(i == 3){
-                    table.dealCard(false, deck.drawBackCard())
-                }
             }
         }
 

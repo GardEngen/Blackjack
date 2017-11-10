@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cardLayout : RelativeLayout
     private lateinit var dealerLayout : RelativeLayout
     private var numbersOfPlayerHits : Int = 0
+    private var numbersOfDealerHits = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,32 +49,29 @@ class MainActivity : AppCompatActivity() {
         splitButton.setOnClickListener{
             game.split()
         }
-        standButton.setOnClickListener {
-            val intent = Intent(this, HighscoreActivity::class.java)
-            startActivity(intent)
+        standButton.setOnClickListener{
+            var card = game.stand()
+            numbersOfDealerHits++
+            //TODO fix crashes game
+            setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, true)
+            while(card != null){
+                card = game.stand()
+                if (card != null){
+                    setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, true)
+                }
+            }
         }
 
         //HIT
         hitButton.setOnClickListener {
             val playerDraw = game.playerHit() // can be null
-
+            println(playerDraw)
             if (playerDraw != null) {
                 numbersOfPlayerHits++
-                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout, true)
+                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout, false)
             }
         }
 
-        standButton.setOnClickListener{
-            var card = game.stand()
-            //TODO send card to GUI
-            while(card != null){
-                card = game.stand()
-                if (card != null){
-                    //TODO send to GUI
-                }
-
-            }
-        }
         //START
         startButton.setOnClickListener{
             cardLayout.removeAllViews()
@@ -85,14 +83,16 @@ class MainActivity : AppCompatActivity() {
 
             //TODO clean this up, add dealer cards, have initial cards show
             for(i in 0..1){
-                setImageToScreen(table.player, i, cardLayout,true)
+                setImageToScreen(table.player, i, cardLayout,false)
             }
 
             for(i in 0..1){
                 //draw backside card
-                setImageToScreen(table.dealer, i, dealerLayout,true)
                 if(i == 1){
-                    setImageToScreen(table.dealer, i+1, dealerLayout,false)
+                    setImageToScreen(table.dealer, i, dealerLayout,true)
+                }
+                else{
+                    setImageToScreen(table.dealer, i, dealerLayout,false)
                 }
             }
         }
@@ -103,17 +103,18 @@ class MainActivity : AppCompatActivity() {
 
         var imgView = ImageView(this)
         val id = resources.getIdentifier(cardString, "drawable", packageName)
-        imgView.setImageResource(id)
-
-        if(i > 0){
+        if(!moveCard) {
+            imgView.setImageResource(id)
+        }
+            //
             var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-            if(moveCard){
-                params.leftMargin = (i*70)
-            } else {
-                params.leftMargin = ((i-1)*70)
+        params.leftMargin = (i*70)
+        if(moveCard){
+
+                imgView.setImageResource(R.drawable.b0)
             }
             imgView.layoutParams = params
-        }
+
         layout.addView(imgView, i)
     }
 }
