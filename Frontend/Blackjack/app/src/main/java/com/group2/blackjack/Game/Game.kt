@@ -25,17 +25,21 @@ class Game constructor(tv : TextView){
         deck.reShuffle()
         table.flushHands()
 
+
         //init hands 2 cards each
         for(i in 0..3){ // draws 0 to 3, 4 cards
             if (i%2 == 0){
                 val drew = deck.draw()
                 table.dealCard(true, drew)
-                println("Player card added: " + drew.color + drew.value)
-            }
-            else{ // i%2 == 1
+            } else { // i%2 == 1
                 val drew = deck.draw()
+
                 table.dealCard(false, drew)
-                println("Dealer card added: " + drew.color + drew.value)
+
+                //back card
+                if(i == 3){
+                    table.dealCard(false, deck.drawBackCard())
+                }
             }
         }
 
@@ -82,7 +86,6 @@ class Game constructor(tv : TextView){
 
     fun playerHit(): Card? {
         if (!roundover){
-            //println("hittttttt")
             val drewCard = deck.draw()
             table.dealCard(true, drewCard)
             if (checkOver()){

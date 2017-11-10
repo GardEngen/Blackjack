@@ -1,17 +1,13 @@
 package com.group2.blackjack.Activities
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ViewGroup
 import android.widget.*
 import com.group2.blackjack.Entities.Card
-import com.group2.blackjack.Entities.Table
-import com.group2.blackjack.Enums.Color
 import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
-
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +17,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var game : Game
     private lateinit var startButton : Button
     private lateinit var standButton : Button
+    private lateinit var cardLayout : RelativeLayout
+    private lateinit var dealerLayout : RelativeLayout
+    private var numbersOfPlayerHits : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         standButton = findViewById(R.id.standButton) as Button
         balance = findViewById(R.id.balanceText) as TextView
         startButton = findViewById(R.id.startButton) as Button
+        standButton = findViewById(R.id.standButton) as Button
+        cardLayout = findViewById(R.id.playerCardsLayout) as RelativeLayout
+        dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
         buttonAction()
 
 
@@ -46,20 +48,19 @@ class MainActivity : AppCompatActivity() {
         splitButton.setOnClickListener{
             game.split()
         }
-        hitButton.setOnClickListener{
-            var cardLayout = findViewById(R.id.cardLayout) as RelativeLayout
-            val playerDraw = game.playerHit() // can be null
-            val dealerDraw = game.dealerHit() // can be null
-            println(playerDraw.toString())
-            //var imgView = ImageView(this)
-            if(playerDraw != null){
-                var cardNumber = 1
-                cardNumber++
-                setImageToScreen(game.table.player, cardNumber, cardLayout)
-            }
-            //imgView.setImageResource(R.drawable.c6)
-            //cardLayout.addView(imgView)
+        standButton.setOnClickListener {
+            val intent = Intent(this, HighscoreActivity::class.java)
+            startActivity(intent)
         }
+
+        //HIT
+        hitButton.setOnClickListener{
+            val playerDraw = game.playerHit() // can be null
+
+            if(playerDraw != null){
+                numbersOfPlayerHits++
+                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout,true)
+
         standButton.setOnClickListener{
             var card = game.stand()
             //TODO send card to GUI
@@ -68,46 +69,49 @@ class MainActivity : AppCompatActivity() {
                 if (card != null){
                     //TODO send to GUI
                 }
+
             }
         }
-
+        //START
         startButton.setOnClickListener{
-            var cardLayout = findViewById(R.id.cardLayout) as RelativeLayout
             cardLayout.removeAllViews()
-            val dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
             dealerLayout.removeAllViews()
+            numbersOfPlayerHits = 1
+
             game.startRound()
             val table = game.table
 
             //TODO clean this up, add dealer cards, have initial cards show
             for(i in 0..1){
-                setImageToScreen(table.player, i, cardLayout)
+                setImageToScreen(table.player, i, cardLayout,true)
             }
 
             for(i in 0..1){
-                setImageToScreen(table.dealer, i, dealerLayout)
+                //draw backside card
+                setImageToScreen(table.dealer, i, dealerLayout,true)
+                if(i == 1){
+                    setImageToScreen(table.dealer, i+1, dealerLayout,false)
+                }
             }
-
         }
     }
 
-    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout) {
+    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, moveCard: Boolean) {
         val cardString = cards[i].toString()
 
         var imgView = ImageView(this)
-        //imgView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         val id = resources.getIdentifier(cardString, "drawable", packageName)
         imgView.setImageResource(id)
 
-        //TODO fix image positions
-        //imgView.layoutParams
-
         if(i > 0){
             var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-            params.addRule(RelativeLayout.RIGHT_OF, i-1)
+            if(moveCard){
+                params.leftMargin = (i*70)
+            } else {
+                params.leftMargin = ((i-1)*70)
+            }
             imgView.layoutParams = params
         }
-
         layout.addView(imgView, i)
     }
 }

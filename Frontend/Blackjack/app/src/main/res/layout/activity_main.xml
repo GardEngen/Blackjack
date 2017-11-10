@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -73,13 +74,6 @@
         android:id="@+id/startButton"
         app:layout_constraintLeft_toRightOf="@+id/balanceText"/>
 
-    <ImageView
-        android:id="@+id/leftCard"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/c1"
-       />
-
     <TextView
         android:id="@+id/balanceText"
         android:layout_width="wrap_content"
@@ -92,7 +86,7 @@
   <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="100dp"
-      android:id="@+id/cardLayout"
+      android:id="@+id/playerCardsLayout"
       android:orientation="horizontal"
       app:layout_constraintBottom_toTopOf="@id/panel">
   </RelativeLayout>
