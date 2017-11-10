@@ -1,0 +1,20 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {subsection}{\numberline {1.1}Motivation}{2}
+\contentsline {subsection}{\numberline {1.2}Kotlin}{2}
+\contentsline {subsubsection}{\numberline {1.2.1}What is Kotlin?}{2}
+\contentsline {subsubsection}{\numberline {1.2.2}History}{2}
+\contentsline {subsubsection}{\numberline {1.2.3}Functionality}{2}
+\contentsline {subsubsection}{\numberline {1.2.4}Where to use Kotlin}{2}
+\contentsline {subsection}{\numberline {1.3}Kotlin Syntax}{2}
+\contentsline {section}{\numberline {2}Android application (Blackjack)}{3}
+\contentsline {subsection}{\numberline {2.1}Functionality}{3}
+\contentsline {subsection}{\numberline {2.2}Tools and frameworks}{3}
+\contentsline {subsection}{\numberline {2.3}Implementation}{4}
+\contentsline {subsubsection}{\numberline {2.3.1}Possibly many subpoints of our different modules}{4}
+\contentsline {section}{\numberline {3}Experiment results and comaprison to java}{4}
+\contentsline {subsection}{\numberline {3.1}Ease of development}{4}
+\contentsline {subsection}{\numberline {3.2}Boilerplate code}{4}
+\contentsline {subsection}{\numberline {3.3}Documentation}{4}
+\contentsline {subsection}{\numberline {3.4}Comparison to Java}{4}
+\contentsline {subsubsection}{\numberline {3.4.1}Possibly many subsections here, guys.}{4}
+\contentsline {section}{\numberline {4}Conclusions}{4}
