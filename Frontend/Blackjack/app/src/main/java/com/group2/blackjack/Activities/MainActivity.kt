@@ -8,6 +8,10 @@ import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
 import com.group2.blackjack.Callbacks.GameOverCallback
+import android.content.DialogInterface
+import android.os.Build
+import android.support.v7.app.AlertDialog
+
 
 class MainActivity : AppCompatActivity(), GameOverCallback {
 
@@ -48,10 +52,24 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
     override fun endGame(winner : Boolean){
         if(winner){
             println("Player won-----")
+            alertBox("You won!")
         }
         else{
             println("Dealer won----")
+            alertBox("You lost!")
         }
+    }
+
+    private fun alertBox(message : String){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+
+        builder.setTitle("Game over")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                    // continue with delete
+                })
+                //.setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
     }
 
 
