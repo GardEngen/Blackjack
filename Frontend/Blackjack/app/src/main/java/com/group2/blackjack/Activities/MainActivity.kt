@@ -1,6 +1,5 @@
 package com.group2.blackjack.Activities
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -8,8 +7,9 @@ import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
+import com.group2.blackjack.Callbacks.GameOverCallback
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GameOverCallback {
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cardLayout : RelativeLayout
     private lateinit var dealerLayout : RelativeLayout
     private var numbersOfPlayerHits : Int = 0
-    private var numbersOfDealerHits = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +37,23 @@ class MainActivity : AppCompatActivity() {
 
 
         //TODO add prompt for bet input
-        game = Game(balance)
+        game = Game(balance, this)
         game.initGame()
+
         //game.startRound()
         //continue round
 
     }
+
+    override fun endGame(winner : Boolean){
+        if(winner){
+            println("Player won-----")
+        }
+        else{
+            println("Dealer won----")
+        }
+    }
+
 
     private fun buttonAction() {
         splitButton.setOnClickListener{
@@ -51,7 +61,8 @@ class MainActivity : AppCompatActivity() {
         }
         standButton.setOnClickListener{
             var card = game.stand()
-            //TODO fix crashes game
+            println("Dealerdraw: " + card)
+            var numbersOfDealerHits = 0
             if(card != null){
                 numbersOfDealerHits++
                 setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, true)
