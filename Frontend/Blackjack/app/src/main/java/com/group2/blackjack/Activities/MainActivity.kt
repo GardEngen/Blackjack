@@ -51,9 +51,11 @@ class MainActivity : AppCompatActivity() {
         }
         standButton.setOnClickListener{
             var card = game.stand()
-            numbersOfDealerHits++
             //TODO fix crashes game
-            setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, true)
+            if(card != null){
+                numbersOfDealerHits++
+                setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, true)
+            }
             while(card != null){
                 card = game.stand()
                 if (card != null){
@@ -81,7 +83,6 @@ class MainActivity : AppCompatActivity() {
             game.startRound()
             val table = game.table
 
-            //TODO clean this up, add dealer cards, have initial cards show
             for(i in 0..1){
                 setImageToScreen(table.player, i, cardLayout,false)
             }

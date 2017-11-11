@@ -75,10 +75,6 @@ class Game constructor(tv : TextView){
         return false
     }
 
-    fun newGame(){
-        //unused
-    }
-
     fun playerHit(): Card? {
         if (!roundover){
             val drewCard = deck.draw()
@@ -97,7 +93,7 @@ class Game constructor(tv : TextView){
             if(rules.getScore(table.dealer) < 17){
                 val drewCard = deck.draw()
                 table.dealCard(false, drewCard)
-                if (checkOver()){ // true = someone has over 21 TODO fix real rules
+                if (checkOver()){ // true = someone has over 21
                     endRound(rules.getWinner(table.player, table.dealer)) // true = player won
                 }
                 return drewCard
