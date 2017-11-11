@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/position"
         android:textSize="18dp"
-        android:text="1."
         android:layout_margin="10dp"
         app:layout_constraintLeft_toRightOf="@+id/image"
 

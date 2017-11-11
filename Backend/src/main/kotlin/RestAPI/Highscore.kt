@@ -18,6 +18,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import java.util.*
 
 fun Application.module() {
     val gson = Gson()
@@ -39,7 +40,9 @@ fun Application.module() {
                 highscoreRepo.insertHighscore(highscore)
                 call.respond(HttpStatusCode.OK)
             } else {
+                Collections.reverse(top10)
                 for (item in top10) {
+
                     if (highscore.score >= item.score) {
                         highscoreRepo.insertHighscore(highscore);
                         highscoreRepo.deleteHighscore(top10.first())

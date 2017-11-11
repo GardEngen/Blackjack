@@ -23,10 +23,14 @@ class HighscoreAdapter(context: Context?, resource: Int, highscores: Array<Highs
         }
         val p = getItem(position)
         if (p != null) {
-            println("jeg kommer inn i sett navn")
             val name = v!!.findViewById(R.id.name) as TextView
-
+            val score = v!!.findViewById(R.id.score) as TextView
+            val positionn = v!!.findViewById(R.id.position) as TextView
             name.text = p.name
+            score.text = p.score.toString()
+            positionn.text = (position+1).toString()
+
+
         }
         return v!!
     }
