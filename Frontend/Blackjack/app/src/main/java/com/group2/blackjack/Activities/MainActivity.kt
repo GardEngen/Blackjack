@@ -9,6 +9,7 @@ import com.group2.blackjack.R
 import android.widget.RelativeLayout
 import com.group2.blackjack.Callbacks.GameOverCallback
 import android.content.DialogInterface
+import android.content.Intent
 import android.support.v7.app.AlertDialog
 
 
@@ -79,7 +80,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
     private fun buttonAction() {
         splitButton.setOnClickListener{
-            game.split()
+            val intent = Intent(this, HighscoreActivity::class.java)
+            startActivity(intent)
         }
         standButton.setOnClickListener{
 

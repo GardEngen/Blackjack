@@ -29,6 +29,13 @@ class HighscoreAdapter(context: Context?, resource: Int, highscores: Array<Highs
             name.text = p.name
             score.text = p.score.toString()
             positionn.text = (position+1).toString()
+            if((position % 2) == 0){
+                println("jeg er her")
+                v.setBackgroundResource(R.color.itemrow2)
+               // name.setTextColor(R.color.itemrow2)
+            } else{
+                v.setBackgroundResource(R.color.itemrow1)
+            }
 
 
         }
