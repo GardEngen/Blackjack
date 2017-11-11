@@ -1,6 +1,5 @@
 package com.group2.blackjack.Activities
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -8,8 +7,12 @@ import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
+import com.group2.blackjack.Callbacks.GameOverCallback
+import android.content.DialogInterface
+import android.support.v7.app.AlertDialog
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), GameOverCallback {
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
@@ -20,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cardLayout : RelativeLayout
     private lateinit var dealerLayout : RelativeLayout
     private var numbersOfPlayerHits : Int = 0
-    private var numbersOfDealerHits = 0
+    private lateinit var backView : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,30 +41,62 @@ class MainActivity : AppCompatActivity() {
 
 
         //TODO add prompt for bet input
-        game = Game(balance)
+        game = Game(balance, this)
         game.initGame()
+
         //game.startRound()
         //continue round
 
     }
+
+    override fun endGame(winner : Boolean){
+        val cardString = game.table.dealer[1].toString()
+        val id = resources.getIdentifier(cardString, "drawable", packageName)
+        backView.setImageResource(id)
+
+        if(winner){
+            println("Player won-----")
+            alertBox("You won!")
+        }
+        else{
+            println("Dealer won----")
+            alertBox("You lost!")
+        }
+    }
+
+    private fun alertBox(message : String){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+
+        builder.setTitle("Game over")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                    // continue with delete
+                })
+                //.setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
+    }
+
 
     private fun buttonAction() {
         splitButton.setOnClickListener{
             game.split()
         }
         standButton.setOnClickListener{
+
             var card = game.stand()
-            //TODO fix crashes game
+            println("Dealerdraw: " + card)
+            var numbersOfDealerHits = 1
             if(card != null){
                 numbersOfDealerHits++
-                setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, true)
+                setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
             }
             while(card != null){
                 card = game.stand()
                 if (card != null){
-                    setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, true)
+                    setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
                 }
             }
+
         }
 
         //HIT
@@ -80,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             dealerLayout.removeAllViews()
             numbersOfPlayerHits = 1
 
-            game.startRound()
+            game.startRound(20)
             val table = game.table
 
             for(i in 0..1){
@@ -99,22 +134,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, moveCard: Boolean) {
+    private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, showBackground: Boolean) {
         val cardString = cards[i].toString()
 
         var imgView = ImageView(this)
         val id = resources.getIdentifier(cardString, "drawable", packageName)
-        if(!moveCard) {
+        if(!showBackground) {
             imgView.setImageResource(id)
         }
-            //
-            var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         params.leftMargin = (i*70)
-        if(moveCard){
-
-                imgView.setImageResource(R.drawable.b0)
-            }
-            imgView.layoutParams = params
+        if(showBackground){
+            imgView.setImageResource(R.drawable.b0)
+            backView = imgView
+        }
+        imgView.layoutParams = params
 
         layout.addView(imgView, i)
     }

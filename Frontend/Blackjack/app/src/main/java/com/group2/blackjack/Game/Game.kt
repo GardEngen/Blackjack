@@ -1,9 +1,7 @@
 package com.group2.blackjack.Game
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import android.widget.ImageView
 import android.widget.TextView
+import com.group2.blackjack.Callbacks.GameOverCallback
 import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Entities.Deck
 import com.group2.blackjack.Entities.Table
@@ -11,16 +9,17 @@ import com.group2.blackjack.Entities.Table
 /**
  * Created by raugz on 11/2/2017.
  */
-class Game constructor(tv : TextView){
+class Game constructor(tv : TextView, event : GameOverCallback){
     var uriPath = "@drawable/"
     var balanceText = tv
+    val eventCaller = event
     private var roundover = false
     lateinit var rules : CardRules
     lateinit var table : Table
     lateinit var deck : Deck
 
 
-    fun startRound(){
+    fun startRound(bet : Int){
         roundover = false
         deck.reShuffle()
         table.flushHands()
@@ -38,8 +37,6 @@ class Game constructor(tv : TextView){
             }
         }
 
-        //TODO add entry money input from user
-        val bet = 20
         table.placeBet(bet)
         balanceText.text = table.money.toString()
     }
@@ -54,13 +51,14 @@ class Game constructor(tv : TextView){
         if (winner){
             val bet = table.currentBet
             table.addMoney(bet*2)
-            println("Player won")
+            balanceText.text = table.money.toString()
+            //println("Player won")
+            eventCaller.endGame(true)
         }
         else{
-            println("Dealer won")
+            eventCaller.endGame(false)
+            //println("Dealer won")
         }
-        //Thread.sleep(2000) // allow user to see result
-        //startRound()
     }
 
     /**
@@ -87,24 +85,9 @@ class Game constructor(tv : TextView){
         return null
     }
 
-    fun dealerHit(): Card? {
-        //TODO call round over in main activity? then start new round from there if we dont want user to do it manually
-        if (!roundover){
-            if(rules.getScore(table.dealer) < 17){
-                val drewCard = deck.draw()
-                table.dealCard(false, drewCard)
-                if (checkOver()){ // true = someone has over 21
-                    endRound(rules.getWinner(table.player, table.dealer)) // true = player won
-                }
-                return drewCard
-            }
-        }
-        return null
-    }
-
     /**
      * Player stands, dealer draws if rules are satisfied,
-     * returns the card drawn by dealer untill he stops drawing, then returns null
+     * returns the card drawn by dealer until he stops drawing, then returns null
      */
     fun stand() : Card?{
         if (!roundover){
@@ -115,14 +98,16 @@ class Game constructor(tv : TextView){
             else{
                 val under21 = rules.getScore(table.dealer) < 21
                 val over16 = rules.getScore(table.dealer) > 16
-                val drew = deck.draw()
-                return if(under21 || over16){
+                if(under21 || over16){
+                    val drew = deck.draw()
                     table.dealCard(false, drew)
-                    checkOver()
-                    drew
+                    if(checkOver()){
+                        endRound(rules.getWinner(table.player, table.dealer))
+                    }
+                    return drew
                 } else{
                     endRound(rules.getWinner(table.player, table.dealer))
-                    null
+                    return null
                 }
             }
         }
