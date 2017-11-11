@@ -8,13 +8,14 @@ import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
+import com.group2.blackjack.Game.GameJavaVersion
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
     private lateinit var balance : TextView
-    private lateinit var game : Game
+    private lateinit var game : GameJavaVersion
     private lateinit var startButton : Button
     private lateinit var standButton : Button
     private lateinit var cardLayout : RelativeLayout
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
 
         //TODO add prompt for bet input
-        game = Game(balance)
+        game = GameJavaVersion(balance)
         game.initGame()
         //game.startRound()
         //continue round

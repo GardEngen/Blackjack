@@ -21,11 +21,15 @@ public class GameJavaVersion {
     private Table table;
     private Deck deck;
 
+    public Table getTable() {
+        return table;
+    }
+
     public GameJavaVersion(TextView view){
         this.balanceText = view;
     }
 
-    public void initgame(){
+    public void initGame(){
         table = new Table(500);
         rules = new CardRules();
         deck = new Deck();
