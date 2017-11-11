@@ -31,6 +31,7 @@ class CardRules {
         return playerScore > dealerScore
     }
 
+    //TODO fix ace is 11 or 1
     fun getScore(hand : List<Card>): Int{
         return hand.sumBy {
             if (it.value <= 10) it.value
