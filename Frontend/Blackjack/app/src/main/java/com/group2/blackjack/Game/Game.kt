@@ -19,7 +19,7 @@ class Game constructor(tv : TextView, event : GameOverCallback){
     lateinit var deck : Deck
 
 
-    fun startRound(){
+    fun startRound(bet : Int){
         roundover = false
         deck.reShuffle()
         table.flushHands()
@@ -37,8 +37,6 @@ class Game constructor(tv : TextView, event : GameOverCallback){
             }
         }
 
-        //TODO add entry money input from user
-        val bet = 20
         table.placeBet(bet)
         balanceText.text = table.money.toString()
     }
@@ -53,6 +51,7 @@ class Game constructor(tv : TextView, event : GameOverCallback){
         if (winner){
             val bet = table.currentBet
             table.addMoney(bet*2)
+            balanceText.text = table.money.toString()
             //println("Player won")
             eventCaller.endGame(true)
         }
@@ -60,8 +59,6 @@ class Game constructor(tv : TextView, event : GameOverCallback){
             eventCaller.endGame(false)
             //println("Dealer won")
         }
-        //Thread.sleep(2000) // allow user to see result
-        //startRound()
     }
 
     /**
@@ -84,20 +81,6 @@ class Game constructor(tv : TextView, event : GameOverCallback){
                 endRound(rules.getWinner(table.player, table.dealer)) // true = player won
             }
             return drewCard
-        }
-        return null
-    }
-
-    fun dealerHit(): Card? {
-        if (!roundover){
-            if(rules.getScore(table.dealer) < 17){
-                val drewCard = deck.draw()
-                table.dealCard(false, drewCard)
-                if (checkOver()){ // true = someone has over 21
-                    endRound(rules.getWinner(table.player, table.dealer)) // true = player won
-                }
-                return drewCard
-            }
         }
         return null
     }
