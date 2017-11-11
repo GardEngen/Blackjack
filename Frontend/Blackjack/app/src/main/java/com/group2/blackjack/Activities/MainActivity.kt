@@ -1,21 +1,19 @@
 package com.group2.blackjack.Activities
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.group2.blackjack.Entities.Card
-import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
-import com.group2.blackjack.Game.GameJavaVersion
+import com.group2.blackjack.Game.GameJV
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
     private lateinit var balance : TextView
-    private lateinit var game : GameJavaVersion
+    private lateinit var game : GameJV
     private lateinit var startButton : Button
     private lateinit var standButton : Button
     private lateinit var cardLayout : RelativeLayout
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
 
         //TODO add prompt for bet input
-        game = GameJavaVersion(balance)
+        game = GameJV(balance)
         game.initGame()
         //game.startRound()
         //continue round

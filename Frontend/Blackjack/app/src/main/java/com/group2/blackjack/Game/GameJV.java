@@ -12,7 +12,7 @@ import java.awt.font.TextAttribute;
  * Created by root on 11.11.17.
  */
 
-public class GameJavaVersion {
+public class GameJV {
     private String uriPath = "@drawable/";
     private TextView balanceText;
 
@@ -25,7 +25,7 @@ public class GameJavaVersion {
         return table;
     }
 
-    public GameJavaVersion(TextView view){
+    public GameJV(TextView view){
         this.balanceText = view;
     }
 
