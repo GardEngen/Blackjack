@@ -98,7 +98,7 @@ class Game constructor(tv : TextView, event : GameOverCallback){
             else{
                 val under21 = rules.getScore(table.dealer) < 21
                 val over16 = rules.getScore(table.dealer) > 16
-                if(under21 || over16){
+                if(under21 && !over16){
                     val drew = deck.draw()
                     table.dealCard(false, drew)
                     if(checkOver()){

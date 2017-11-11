@@ -92,6 +92,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             }
             while(card != null){
                 card = game.stand()
+                println("Dealerdraw " + card)
+                numbersOfDealerHits++
                 if (card != null){
                     setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
                 }
