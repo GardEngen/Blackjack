@@ -13,7 +13,7 @@ import com.group2.blackjack.Enums.EndGameState
 class Game constructor(tv : TextView, event : GameOverCallback){
     private var balanceText = tv
     private val eventCaller = event
-    var roundOver = true 
+    var roundOver = true
     lateinit var rules : CardRules
     lateinit var table : Table
     lateinit var deck : Deck
@@ -23,7 +23,6 @@ class Game constructor(tv : TextView, event : GameOverCallback){
         roundOver = false
         deck.reShuffle()
         table.flushHands()
-
 
         //init hands 2 cards each
         for(i in 0..3){ // draws 0 to 3, 4 cards

@@ -91,33 +91,33 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         }
         standButton.setOnClickListener{
             if (!game.roundOver){
-
-            }
-            var card = game.stand()
-            println("Dealerdraw: " + card)
-            var numbersOfDealerHits = 1
-            if(card != null){
-                numbersOfDealerHits++
-                setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
-            }
-            while(card != null){
-                card = game.stand()
-                println("Dealerdraw " + card)
-                numbersOfDealerHits++
-                if (card != null){
+                var card = game.stand()
+                println("Dealerdraw: " + card)
+                var numbersOfDealerHits = 1
+                if(card != null){
+                    numbersOfDealerHits++
                     setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
                 }
+                while(card != null){
+                    card = game.stand()
+                    println("Dealerdraw " + card)
+                    numbersOfDealerHits++
+                    if (card != null){
+                        setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
+                    }
+                }
             }
-
         }
 
         //HIT
         hitButton.setOnClickListener {
-            val playerDraw = game.playerHit() // can be null
-            println(playerDraw)
-            if (playerDraw != null) {
-                numbersOfPlayerHits++
-                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout, false)
+            if (!game.roundOver){
+                val playerDraw = game.playerHit() // can be null
+                println(playerDraw)
+                if (playerDraw != null) {
+                    numbersOfPlayerHits++
+                    setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout, false)
+                }
             }
         }
 
