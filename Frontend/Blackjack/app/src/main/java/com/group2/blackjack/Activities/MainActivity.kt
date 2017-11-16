@@ -77,8 +77,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
         builder.setTitle("Round over")
                 .setMessage(message)
-                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
-                    // continue with delete
+                .setPositiveButton(android.R.string.yes, { _, _ ->
                 })
                 //.setIcon(android.R.drawable.ic_dialog_alert)
                 .show()
@@ -91,32 +90,34 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             startActivity(intent)
         }
         standButton.setOnClickListener{
-
-            var card = game.stand()
-            println("Dealerdraw: " + card)
-            var numbersOfDealerHits = 1
-            if(card != null){
-                numbersOfDealerHits++
-                setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
-            }
-            while(card != null){
-                card = game.stand()
-                println("Dealerdraw " + card)
-                numbersOfDealerHits++
-                if (card != null){
+            if (!game.roundOver){
+                var card = game.stand()
+                println("Dealerdraw: " + card)
+                var numbersOfDealerHits = 1
+                if(card != null){
+                    numbersOfDealerHits++
                     setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
                 }
+                while(card != null){
+                    card = game.stand()
+                    println("Dealerdraw " + card)
+                    numbersOfDealerHits++
+                    if (card != null){
+                        setImageToScreen(game.table.dealer, numbersOfDealerHits, dealerLayout, false)
+                    }
+                }
             }
-
         }
 
         //HIT
         hitButton.setOnClickListener {
-            val playerDraw = game.playerHit() // can be null
-            println(playerDraw)
-            if (playerDraw != null) {
-                numbersOfPlayerHits++
-                setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout, false)
+            if (!game.roundOver){
+                val playerDraw = game.playerHit() // can be null
+                println(playerDraw)
+                if (playerDraw != null) {
+                    numbersOfPlayerHits++
+                    setImageToScreen(game.table.player, numbersOfPlayerHits, cardLayout, false)
+                }
             }
         }
 
@@ -129,36 +130,32 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             game.startRound(20)
             val table = game.table
 
+            //player cards
             for(i in 0..1){
                 setImageToScreen(table.player, i, cardLayout,false)
             }
-
-            for(i in 0..1){
-                //draw backside card
-                if(i == 1){
-                    setImageToScreen(table.dealer, i, dealerLayout,true)
-                }
-                else{
-                    setImageToScreen(table.dealer, i, dealerLayout,false)
-                }
-            }
+            //dealer cards
+            setImageToScreen(table.dealer, 0, dealerLayout,false)
+            setImageToScreen(table.dealer, 1, dealerLayout,true)
         }
     }
 
     private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, showBackground: Boolean) {
         val cardString = cards[i].toString()
 
-        var imgView = ImageView(this)
+        val imgView = ImageView(this)
         val id = resources.getIdentifier(cardString, "drawable", packageName)
-        if(!showBackground) {
-            imgView.setImageResource(id)
-        }
-        var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-        params.leftMargin = (i*70)
+
         if(showBackground){
             imgView.setImageResource(R.drawable.b0)
             backView = imgView
         }
+        else {
+            imgView.setImageResource(id)
+        }
+
+        val params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        params.leftMargin = (i*70)
         imgView.layoutParams = params
 
         layout.addView(imgView, i)
