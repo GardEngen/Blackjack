@@ -8,10 +8,11 @@ import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
 import com.group2.blackjack.Callbacks.GameOverCallback
-import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AlertDialog
 import com.group2.blackjack.Enums.EndGameState
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 
 
 class MainActivity : AppCompatActivity(), GameOverCallback {
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
     private lateinit var dealerLayout : RelativeLayout
     private var numbersOfPlayerHits : Int = 0
     private lateinit var backView : ImageView
+    private lateinit var seekBar : SeekBar
+    private lateinit var betText : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         standButton = findViewById(R.id.standButton) as Button
         cardLayout = findViewById(R.id.playerCardsLayout) as RelativeLayout
         dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
+        seekBar = findViewById(R.id.seekBar) as SeekBar
+        betText = findViewById(R.id.betText) as TextView
         buttonAction()
 
 
@@ -85,6 +90,25 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
 
     private fun buttonAction() {
+        seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                var maxBet = (balance.text).toString().toInt()
+                var bet = ( maxBet * ((progress*10) / 100.0f))
+                if(progress <= 1) {
+                    bet = ( maxBet * ((progress*1) / 100.0f))
+                }
+                betText.text = (bet).toString()
+            }
+        })
+
+
         splitButton.setOnClickListener{
             val intent = Intent(this, HighscoreActivity::class.java)
             startActivity(intent)
