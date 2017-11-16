@@ -11,6 +11,7 @@ import com.group2.blackjack.Callbacks.GameOverCallback
 import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AlertDialog
+import com.group2.blackjack.Enums.EndGameState
 
 
 class MainActivity : AppCompatActivity(), GameOverCallback {
@@ -50,25 +51,31 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
     }
 
-    override fun endGame(winner : Boolean){
+    override fun endGame(winner : EndGameState){
         val cardString = game.table.dealer[1].toString()
         val id = resources.getIdentifier(cardString, "drawable", packageName)
         backView.setImageResource(id)
 
-        if(winner){
-            println("Player won-----")
-            alertBox("You won!")
-        }
-        else{
-            println("Dealer won----")
-            alertBox("You lost!")
+        when (winner) {
+            EndGameState.PLAYER -> {
+                println("Player won-----")
+                alertBox("You won!")
+            }
+            EndGameState.DEALER -> {
+                println("Dealer won----")
+                alertBox("You lost!")
+            }
+            else -> {
+                println("Push----")
+                alertBox("Push")
+            }
         }
     }
 
     private fun alertBox(message : String){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Game over")
+        builder.setTitle("Round over")
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
                     // continue with delete

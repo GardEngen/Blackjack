@@ -5,6 +5,8 @@ import com.group2.blackjack.Callbacks.GameOverCallback
 import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Entities.Deck
 import com.group2.blackjack.Entities.Table
+import com.group2.blackjack.Enums.Color
+import com.group2.blackjack.Enums.EndGameState
 
 /**
  * Created by raugz on 11/2/2017.
@@ -47,17 +49,23 @@ class Game constructor(tv : TextView, event : GameOverCallback){
         deck = Deck()
     }
 
-    private fun endRound(winner : Boolean){
-        if (winner){
-            val bet = table.currentBet
-            table.addMoney(bet*2)
-            balanceText.text = table.money.toString()
-            //println("Player won")
-            eventCaller.endGame(true)
-        }
-        else{
-            eventCaller.endGame(false)
-            //println("Dealer won")
+    private fun endRound(winner : EndGameState) {
+        return when (winner) {
+            EndGameState.PLAYER -> {
+                val bet = table.currentBet
+                table.addMoney(bet*2)
+                balanceText.text = table.money.toString()
+                eventCaller.endGame(EndGameState.PLAYER)
+            }
+            EndGameState.DEALER -> {
+                eventCaller.endGame(EndGameState.DEALER)
+            }
+            else -> {
+                val bet = table.currentBet
+                table.addMoney(bet)
+                balanceText.text = table.money.toString()
+                eventCaller.endGame(EndGameState.PUSH)
+            }
         }
     }
 
@@ -78,7 +86,7 @@ class Game constructor(tv : TextView, event : GameOverCallback){
             val drewCard = deck.draw()
             table.dealCard(true, drewCard)
             if (checkOver()){
-                endRound(rules.getWinner(table.player, table.dealer)) // true = player won
+                endRound(rules.getWinner(table.player, table.dealer))
             }
             return drewCard
         }
@@ -112,13 +120,5 @@ class Game constructor(tv : TextView, event : GameOverCallback){
             }
         }
         return null
-    }
-    //TODO future
-    fun split(){
-        println("hei")
-    }
-    //TODO future
-    fun double(){
-
     }
 }

@@ -1,6 +1,7 @@
 package com.group2.blackjack.Game
 
 import com.group2.blackjack.Entities.Card
+import com.group2.blackjack.Enums.EndGameState
 
 /**
  * Created by raugz on 11/2/2017.
@@ -16,19 +17,21 @@ class CardRules {
     }
 
     /**
-     * returns true if the player wins, false if dealer wins
+     * returns the EndGameState determined by the user and dealers scores
      */
-    fun getWinner(player : List<Card>, dealer : List<Card>): Boolean{
+    fun getWinner(player : List<Card>, dealer : List<Card>): EndGameState{
         val playerScore = getScore(player)
         val dealerScore = getScore(dealer)
-        if(playerScore > 21){
-            return false
+        return when {
+            playerScore > 21 -> EndGameState.DEALER
+            dealerScore > 21 -> EndGameState.PLAYER
+            else -> when {
+                playerScore > dealerScore -> EndGameState.PLAYER
+                playerScore < dealerScore -> EndGameState.DEALER
+                else -> EndGameState.PUSH
+            }
         }
-        if (dealerScore > 21){
-            return true
-        }
-        //TODO fix playerscore = dealerscore push
-        return playerScore > dealerScore
+
     }
 
     //TODO fix ace is 11 or 1
