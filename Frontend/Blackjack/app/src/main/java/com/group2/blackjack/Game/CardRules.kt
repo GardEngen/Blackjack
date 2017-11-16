@@ -34,13 +34,28 @@ class CardRules {
 
     }
 
-    //TODO fix ace is 11 or 1
     fun getScore(hand : List<Card>): Int{
-        return hand.sumBy {
-            if (it.value <= 10) it.value
-            else{
-                10
+        var sumAceOne = 0
+        hand.forEach { card ->
+            sumAceOne += when {
+                card.value > 10 -> 10
+                else -> card.value
             }
+        }
+
+        var sumAceEleven = 0
+        hand.forEach { card ->
+            sumAceEleven += when {
+                card.value == 1 -> 11
+                card.value > 10 -> 10
+                else -> card.value
+            }
+        }
+
+        return if (sumAceEleven > 21) {
+            sumAceOne
+        } else {
+            sumAceEleven
         }
     }
 }

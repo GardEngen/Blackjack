@@ -5,24 +5,22 @@ import com.group2.blackjack.Callbacks.GameOverCallback
 import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Entities.Deck
 import com.group2.blackjack.Entities.Table
-import com.group2.blackjack.Enums.Color
 import com.group2.blackjack.Enums.EndGameState
 
 /**
  * Created by raugz on 11/2/2017.
  */
 class Game constructor(tv : TextView, event : GameOverCallback){
-    var uriPath = "@drawable/"
-    var balanceText = tv
-    val eventCaller = event
-    private var roundover = false
+    private var balanceText = tv
+    private val eventCaller = event
+    var roundOver = true 
     lateinit var rules : CardRules
     lateinit var table : Table
     lateinit var deck : Deck
 
 
     fun startRound(bet : Int){
-        roundover = false
+        roundOver = false
         deck.reShuffle()
         table.flushHands()
 
@@ -75,14 +73,14 @@ class Game constructor(tv : TextView, event : GameOverCallback){
      */
     private fun checkOver(): Boolean {
         if (rules.check21(table.player, table.dealer)){
-            roundover = true
+            roundOver = true
             return true
         }
         return false
     }
 
     fun playerHit(): Card? {
-        if (!roundover){
+        if (!roundOver){
             val drewCard = deck.draw()
             table.dealCard(true, drewCard)
             if (checkOver()){
@@ -94,11 +92,11 @@ class Game constructor(tv : TextView, event : GameOverCallback){
     }
 
     /**
-     * Player stands, dealer draws if rules are satisfied,
+     * Player stands, dealer draws if under 21 and not over 16
      * returns the card drawn by dealer until he stops drawing, then returns null
      */
     fun stand() : Card?{
-        if (!roundover){
+        if (!roundOver){
             if (checkOver()){
                 endRound(rules.getWinner(table.player, table.dealer)) // true = player won
                 return null
