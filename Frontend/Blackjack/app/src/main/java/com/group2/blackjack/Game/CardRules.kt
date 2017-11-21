@@ -25,11 +25,9 @@ class CardRules {
         return when {
             playerScore > 21 -> EndGameState.DEALER
             dealerScore > 21 -> EndGameState.PLAYER
-            else -> when {
-                playerScore > dealerScore -> EndGameState.PLAYER
-                playerScore < dealerScore -> EndGameState.DEALER
-                else -> EndGameState.PUSH
-            }
+            playerScore > dealerScore -> EndGameState.PLAYER
+            playerScore < dealerScore -> EndGameState.DEALER
+            else -> EndGameState.PUSH
         }
 
     }

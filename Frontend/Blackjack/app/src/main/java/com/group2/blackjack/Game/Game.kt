@@ -5,6 +5,7 @@ import com.group2.blackjack.Callbacks.GameOverCallback
 import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Entities.Deck
 import com.group2.blackjack.Entities.Table
+import com.group2.blackjack.Enums.Color
 import com.group2.blackjack.Enums.EndGameState
 
 /**
@@ -26,6 +27,7 @@ class Game constructor(tv : TextView, event : GameOverCallback){
 
         //init hands 2 cards each
         for(i in 0..3){ // draws 0 to 3, 4 cards
+            //var testCard = Card(Color.HEARTHS, 9)
             if (i%2 == 0){
                 val drew = deck.draw()
                 table.dealCard(true, drew)
@@ -34,6 +36,9 @@ class Game constructor(tv : TextView, event : GameOverCallback){
 
                 table.dealCard(false, drew)
             }
+        }
+        if (checkOver()){
+            endRound(rules.getWinner(table.player, table.dealer))
         }
 
         table.placeBet(bet)
