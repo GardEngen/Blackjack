@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="HighScores"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/Indigo"
         app:layout_constraintLeft_toLeftOf="@id/panel"
         app:layout_constraintRight_toRightOf="@id/panel"
         app:layout_constraintHorizontal_bias="0.04"
@@ -41,14 +41,14 @@
         app:layout_constraintTop_toTopOf="@+id/panel"
         app:layout_constraintBottom_toBottomOf="@id/panel"
         android:layout_margin="10dp"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="@color/Yellow"/>
 
     <Button
         android:id="@+id/hitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hit"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/Green"
         app:layout_constraintLeft_toRightOf="@id/submitButton"
         app:layout_constraintTop_toTopOf="@+id/panel"
         app:layout_constraintBottom_toBottomOf="@id/panel"
@@ -70,8 +70,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
+        android:background="@color/Amber"
         app:layout_constraintTop_toBottomOf="@id/panel"
         android:id="@+id/startButton"
+        app:layout_constraintRight_toLeftOf="@id/submitButton"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <TextView
@@ -80,6 +82,7 @@
         android:layout_height="wrap_content"
         android:text="Your balance: "
         android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/panel"
         />
@@ -91,6 +94,7 @@
         app:layout_constraintBottom_toTopOf="@id/panel"
         app:layout_constraintLeft_toRightOf="@+id/balance"
         android:text="500"
+        android:textColor="@color/colorPrimary"
         android:textSize="20dp"/>
 
   <RelativeLayout
@@ -134,6 +138,7 @@
         app:layout_constraintHorizontal_bias="0.9"
         android:textSize="15dp"
         android:text="0.0"
+        android:textColor="@color/colorPrimary"
         >
 
     </TextView>
