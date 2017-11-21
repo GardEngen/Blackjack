@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
 
         buttonAction()
 
+        hitButton.isEnabled = false
+        standButton.isEnabled = false
         game = Game(balance, this, this)
         game.initGame()
 
@@ -121,8 +123,10 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
-        builder.setPositiveButton("Send") { _, _ -> inputName = input.text.toString()
-            restClient.postScore(inputName, game.table.money)}
+        builder.setPositiveButton("Send") { _, _ ->
+            inputName = input.text.toString()
+            restClient.postScore(inputName, game.table.money)
+            game.table.money = 500}
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
         builder.show()
     }
