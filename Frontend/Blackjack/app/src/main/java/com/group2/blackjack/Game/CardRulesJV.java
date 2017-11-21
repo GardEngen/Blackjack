@@ -1,6 +1,8 @@
 package com.group2.blackjack.Game;
 
 import com.group2.blackjack.Entities.Card;
+import com.group2.blackjack.Enums.EndGameState;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -22,28 +24,55 @@ public class CardRulesJV {
     /**
      * returns true if the player wins, false if dealer wins
      */
-    public boolean getWinner(List<Card> player, List<Card> dealer){
+    public EndGameState getWinner(List<Card> player, List<Card> dealer){
         int playerScore = getScore(player);
         int dealerScore = getScore(dealer);
+
         if(playerScore > 21){
-            return false;
+            return EndGameState.DEALER;
         }
-        if (dealerScore > 21){
-            return true;
+        else if(dealerScore > 21){
+            return EndGameState.PLAYER;
         }
-        //TODO fix playerscore = dealerscore push
-        return playerScore > dealerScore;
+        else{
+            if(playerScore > dealerScore) {
+                return EndGameState.PLAYER;
+            }
+            else if(playerScore < dealerScore){
+                return EndGameState.DEALER;
+            }
+            else{
+                return EndGameState.PUSH;
+            }
+        }
     }
 
     public int getScore(List<Card> hand){
-        int sum = 0;
-        for (Card c: hand) {
-            if(c.getValue() <= 10) c.getValue();
-            else{
-                sum+=10;
-            }
+        int sumAceOne = 0;
+
+        for (Card card: hand) {
+            if(card.getValue() < 10)
+                sumAceOne+= 10;
+            else
+                sumAceOne+=card.getValue();
         }
-        return sum;
+
+        int sumAceEleven = 0;
+        for (Card card: hand) {
+            if(card.getValue() == 1)
+                sumAceEleven+=11;
+            else if(card.getValue() > 10)
+                sumAceEleven+=10;
+            else
+                sumAceEleven +=card.getValue();
+        }
+
+
+        if (sumAceEleven > 21) {
+            return sumAceOne;
+        } else {
+            return sumAceEleven;
+        }
     }
 
 }
