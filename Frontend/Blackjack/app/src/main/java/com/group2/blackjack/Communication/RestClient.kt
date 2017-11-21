@@ -20,7 +20,7 @@ class RestClient() {
         val json = JSONObject()
         json.put("name", name)
         json.put("score", score)
-
+        println(json.toString())
         Fuel.post(fullUrl + "postScore")
                 .header("Content-Type" to "application/json")
                 .body(json.toString())

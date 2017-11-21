@@ -53,7 +53,8 @@ class Game constructor(tv : TextView, event : GameOverCallback, cardSumCallback:
     }
 
     private fun endRound(winner : EndGameState) {
-        return when (winner) {
+        callTo.updateSum(rules.getScore(table.player), rules.getScore(table.dealer), true)
+        when (winner) {
             EndGameState.PLAYER -> {
                 val bet = table.currentBet
                 table.addMoney(bet*2)
@@ -78,7 +79,6 @@ class Game constructor(tv : TextView, event : GameOverCallback, cardSumCallback:
      */
     private fun checkOver(): Boolean {
         return if (rules.check21(table.player, table.dealer)){
-            callTo.updateSum(rules.getScore(table.player), rules.getScore(table.dealer), true)
             roundOver = true
             true
         }

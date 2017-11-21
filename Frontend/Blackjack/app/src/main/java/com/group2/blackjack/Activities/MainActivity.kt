@@ -15,6 +15,12 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import com.group2.blackjack.Callbacks.UpdateCardSumCallback
 import com.group2.blackjack.Game.Game
+import android.R.string.cancel
+import android.content.DialogInterface
+import android.text.InputType
+import android.support.v4.widget.SearchViewCompat.setInputType
+import android.widget.EditText
+import com.group2.blackjack.Communication.RestClient
 
 
 class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallback{
@@ -35,6 +41,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
     private var currBet : Float = 0f
     private lateinit var playerSum : TextView
     private lateinit var dealerSum : TextView
+    private val restClient = RestClient()
+    private var inputName = "";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +76,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
         val cardString = game.table.dealer[1].toString()
         val id = resources.getIdentifier(cardString, "drawable", packageName)
         backView.setImageResource(id)
+        hitButton.isEnabled = false
+        standButton.isEnabled = false
 
         when (winner) {
             EndGameState.PLAYER -> {
@@ -103,6 +113,20 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
                 .show()
     }
 
+    private fun submitDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Send highscore")
+
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("Send") { _, _ -> inputName = input.text.toString()
+            restClient.postScore(inputName, game.table.money)}
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+        builder.show()
+    }
+
 
     private fun buttonAction() {
         seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
@@ -129,7 +153,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
             startActivity(intent)
         }
         submitButton.setOnClickListener{
-            
+            submitDialog()
         }
 
         standButton.setOnClickListener{
@@ -166,7 +190,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
 
         //START
         startButton.setOnClickListener{
-            flushViews()
+            init()
             numbersOfPlayerHits = 1
 
             game.startRound(currBet.toInt())
@@ -182,11 +206,13 @@ class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallbac
         }
     }
 
-    private fun flushViews(){
+    private fun init(){
         cardLayout.removeAllViews()
         dealerLayout.removeAllViews()
         playerSum.text = ""
         dealerSum.text = ""
+        hitButton.isEnabled = true
+        standButton.isEnabled = true
     }
 
     private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, showBackground: Boolean) {
