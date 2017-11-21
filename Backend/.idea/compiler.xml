@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="Backend_main" target="1.8" />
       <module name="Backend_test" target="1.8" />
+      <module name="Blackjack-Backend_main" target="1.8" />
+      <module name="Blackjack-Backend_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

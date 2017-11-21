@@ -6,6 +6,7 @@ import org.litote.kmongo.KMongo
 import org.litote.kmongo.deleteOne
 import org.litote.kmongo.getCollection
 import org.litote.kmongo.json
+import java.util.*
 
 
 class HighscoreRepository {
@@ -35,7 +36,8 @@ class HighscoreRepository {
         if(collection != null) {
             collection!!.find().forEach { top10.add(it) }
             top10 = ArrayList(top10.sortedWith(compareBy { it.score }))
+            Collections.reverse(top10)
         }
-        return top10;
+        return top10
     }
 }

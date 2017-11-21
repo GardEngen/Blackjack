@@ -3,5 +3,6 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#456787</color>
-    <color name="panelColor">#306260</color>
+    <color name="itemrow1">#90CAF9</color>
+    <color name="itemrow2">#1E88E5</color>
 </resources>
