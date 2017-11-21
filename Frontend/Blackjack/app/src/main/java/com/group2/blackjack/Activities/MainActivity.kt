@@ -4,9 +4,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.group2.blackjack.Entities.Card
-import com.group2.blackjack.Game.Game
 import com.group2.blackjack.R
 import android.widget.RelativeLayout
+
 import com.group2.blackjack.Callbacks.GameOverCallback
 import android.content.Intent
 import android.support.v7.app.AlertDialog
@@ -15,13 +15,14 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 
 
+
 class MainActivity : AppCompatActivity(), GameOverCallback {
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
     private lateinit var submitButton : Button
     private lateinit var balance : TextView
-    private lateinit var game : Game
+    private lateinit var game : GameJV
     private lateinit var startButton : Button
     private lateinit var standButton : Button
     private lateinit var cardLayout : RelativeLayout
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         buttonAction()
 
         game = Game(balance, this)
+
         game.initGame()
 
         //game.startRound()
