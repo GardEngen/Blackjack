@@ -13,10 +13,11 @@ import android.support.v7.app.AlertDialog
 import com.group2.blackjack.Enums.EndGameState
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import com.group2.blackjack.Callbacks.UpdateCardSumCallback
 import com.group2.blackjack.Game.Game
 
 
-class MainActivity : AppCompatActivity(), GameOverCallback {
+class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallback{
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
     private lateinit var seekBar : SeekBar
     private lateinit var betText : TextView
     private var currBet : Float = 0f
+    private lateinit var playerSum : TextView
+    private lateinit var dealerSum : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +51,12 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
         seekBar = findViewById(R.id.seekBar) as SeekBar
         betText = findViewById(R.id.betText) as TextView
+        playerSum = findViewById(R.id.playerSum) as TextView
+        dealerSum = findViewById(R.id.dealerSum) as TextView
 
         buttonAction()
 
-        game = Game(balance, this)
-
+        game = Game(balance, this, this)
         game.initGame()
 
         //game.startRound()
@@ -78,6 +82,13 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
                 println("Push----")
                 alertBox("Push")
             }
+        }
+    }
+
+    override fun updateSum(player: Int, dealer: Int, showDealer: Boolean) {
+        playerSum.text = player.toString()
+        if(showDealer){
+            dealerSum.text = dealer.toString()
         }
     }
 
@@ -155,8 +166,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
         //START
         startButton.setOnClickListener{
-            cardLayout.removeAllViews()
-            dealerLayout.removeAllViews()
+            flushViews()
             numbersOfPlayerHits = 1
 
             game.startRound(currBet.toInt())
@@ -170,6 +180,13 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             setImageToScreen(table.dealer, 0, dealerLayout,false)
             setImageToScreen(table.dealer, 1, dealerLayout,true)
         }
+    }
+
+    private fun flushViews(){
+        cardLayout.removeAllViews()
+        dealerLayout.removeAllViews()
+        playerSum.text = ""
+        dealerSum.text = ""
     }
 
     private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, showBackground: Boolean) {
