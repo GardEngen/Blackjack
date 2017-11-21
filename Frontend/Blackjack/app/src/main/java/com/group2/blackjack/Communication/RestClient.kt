@@ -11,7 +11,7 @@ import org.json.JSONObject
  * Created by Gard on 09.11.2017.
  */
 class RestClient() {
-    private var ip = "192.168.20.14"
+    private var ip = "158.37.192.34"
     private var port = "5000"
     private var fullUrl = "http://" + ip + ":" + port + "/"
      var aCallback: AsyncResponseCallback? = null

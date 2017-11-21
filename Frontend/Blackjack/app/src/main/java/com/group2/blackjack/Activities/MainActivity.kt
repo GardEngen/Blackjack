@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
+    private lateinit var submitButton : Button
     private lateinit var balance : TextView
     private lateinit var game : Game
     private lateinit var startButton : Button
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         balance = findViewById(R.id.balanceText) as TextView
         startButton = findViewById(R.id.startButton) as Button
         standButton = findViewById(R.id.standButton) as Button
+        submitButton = findViewById(R.id.submitButton) as Button
         cardLayout = findViewById(R.id.playerCardsLayout) as RelativeLayout
         dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
         seekBar = findViewById(R.id.seekBar) as SeekBar
@@ -113,6 +115,10 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             val intent = Intent(this, HighscoreActivity::class.java)
             startActivity(intent)
         }
+        submitButton.setOnClickListener{
+            
+        }
+
         standButton.setOnClickListener{
             if (!game.roundOver){
                 var card = game.stand()
