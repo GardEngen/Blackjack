@@ -13,7 +13,7 @@ import android.support.v7.app.AlertDialog
 import com.group2.blackjack.Enums.EndGameState
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-
+import com.group2.blackjack.Game.Game
 
 
 class MainActivity : AppCompatActivity(), GameOverCallback {
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
     private lateinit var hitButton : Button
     private lateinit var submitButton : Button
     private lateinit var balance : TextView
-    private lateinit var game : GameJV
+    private lateinit var game : Game
     private lateinit var startButton : Button
     private lateinit var standButton : Button
     private lateinit var cardLayout : RelativeLayout
