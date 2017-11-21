@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
     private lateinit var backView : ImageView
     private lateinit var seekBar : SeekBar
     private lateinit var betText : TextView
+    private var currBet : Float = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +45,9 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
         seekBar = findViewById(R.id.seekBar) as SeekBar
         betText = findViewById(R.id.betText) as TextView
+
         buttonAction()
 
-
-        //TODO add prompt for bet input
         game = Game(balance, this)
         game.initGame()
 
@@ -100,11 +100,11 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 var maxBet = (balance.text).toString().toInt()
-                var bet = ( maxBet * ((progress*10) / 100.0f))
+                currBet = ( maxBet * ((progress*10) / 100.0f))
                 if(progress <= 1) {
-                    bet = ( maxBet * ((progress*1) / 100.0f))
+                    currBet = ( maxBet * ((progress*1) / 100.0f))
                 }
-                betText.text = (bet).toString()
+                betText.text = (currBet).toString()
             }
         })
 
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             dealerLayout.removeAllViews()
             numbersOfPlayerHits = 1
 
-            game.startRound(20)
+            game.startRound(currBet.toInt())
             val table = game.table
 
             //player cards
