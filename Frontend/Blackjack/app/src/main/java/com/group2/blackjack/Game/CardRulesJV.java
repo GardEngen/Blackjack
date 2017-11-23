@@ -1,6 +1,7 @@
 package com.group2.blackjack.Game;
 
 import com.group2.blackjack.Entities.Card;
+import com.group2.blackjack.Entities.CardJV;
 import com.group2.blackjack.Enums.EndGameState;
 
 
@@ -15,7 +16,7 @@ public class CardRulesJV {
     /**
      * true if player or dealer won
      */
-    public boolean check21(List<Card> player, List<Card> dealer){
+    public boolean check21(List<CardJV> player, List<CardJV> dealer){
         int playerScore = getScore(player);
         int dealerScore = getScore(dealer);
         return (playerScore >= 21 || dealerScore >= 21);
@@ -24,7 +25,7 @@ public class CardRulesJV {
     /**
      * returns true if the player wins, false if dealer wins
      */
-    public EndGameState getWinner(List<Card> player, List<Card> dealer){
+    public EndGameState getWinner(List<CardJV> player, List<CardJV> dealer){
         int playerScore = getScore(player);
         int dealerScore = getScore(dealer);
 
@@ -47,10 +48,10 @@ public class CardRulesJV {
         }
     }
 
-    public int getScore(List<Card> hand){
+    public int getScore(List<CardJV> hand){
         int sumAceOne = 0;
 
-        for (Card card: hand) {
+        for (CardJV card: hand) {
             if(card.getValue() < 10)
                 sumAceOne+= 10;
             else
@@ -58,7 +59,7 @@ public class CardRulesJV {
         }
 
         int sumAceEleven = 0;
-        for (Card card: hand) {
+        for (CardJV card: hand) {
             if(card.getValue() == 1)
                 sumAceEleven+=11;
             else if(card.getValue() > 10)
