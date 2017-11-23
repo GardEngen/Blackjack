@@ -9,14 +9,6 @@ import com.group2.blackjack.Enums.Color;
 public class CardJV {
     private Color color;
 
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
     private int value;
     public Color getColor() {
         return color;
@@ -26,7 +18,13 @@ public class CardJV {
         this.color = color;
     }
 
+    public int getValue() {
+        return value;
+    }
 
+    public void setValue(int value){
+        this.value = value;
+    }
 
     public CardJV(Color color, int value){
         this.color = color;

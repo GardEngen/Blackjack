@@ -50,24 +50,22 @@ public class CardRulesJV {
 
     public int getScore(List<CardJV> hand){
         int sumAceOne = 0;
-
         for (CardJV card: hand) {
             if(card.getValue() < 10)
-                sumAceOne+= 10;
+                sumAceOne += 10;
             else
-                sumAceOne+=card.getValue();
+                sumAceOne += card.getValue();
         }
 
         int sumAceEleven = 0;
         for (CardJV card: hand) {
             if(card.getValue() == 1)
-                sumAceEleven+=11;
+                sumAceEleven += 11;
             else if(card.getValue() > 10)
-                sumAceEleven+=10;
+                sumAceEleven += 10;
             else
-                sumAceEleven +=card.getValue();
+                sumAceEleven += card.getValue();
         }
-
 
         if (sumAceEleven > 21) {
             return sumAceOne;

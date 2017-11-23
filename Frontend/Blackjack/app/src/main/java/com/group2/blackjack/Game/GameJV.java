@@ -28,7 +28,6 @@ public class GameJV {
     private DeckJV deck;
 
 
-
     public TableJV getTable() {
         return table;
     }
@@ -46,12 +45,13 @@ public class GameJV {
     }
 
     public void startRound(int bet){
-        roundOver=false;
+        roundOver = false;
         deck.reShuffle();
         table.flushHands();
 
         //init hands 2 cards each
         for(int i = 0; i < 4; i ++){ // draws 0 to 3, 4 cards
+            //var testCard = Card(Color.HEARTHS, 9)
             if (i%2 == 0){
                 CardJV drew = deck.draw();
                 table.dealCard(true, drew);
@@ -59,16 +59,14 @@ public class GameJV {
                 CardJV drew = deck.draw();
 
                 table.dealCard(false, drew);
-
             }
         }
-
         if (checkOver()){
             endRound(rules.getWinner(table.getPlayer(), table.getDealer()));
         }
 
         table.placeBet(bet);
-        balanceText.setText(""+table.getMoney());
+        balanceText.setText("" + table.getMoney());
     }
 
 
@@ -76,7 +74,7 @@ public class GameJV {
     private void endRound(EndGameState winner){
         if (winner == EndGameState.PLAYER) {
             int bet = table.getCurrentBet();
-            table.addMoney(bet * 2);
+            table.addMoney(bet*2);
             balanceText.setText(table.getMoney());
             eventCaller.endGame(EndGameState.PLAYER);
         }
@@ -115,21 +113,6 @@ public class GameJV {
         return null;
     }
 
-    public CardJV dealerHit(){
-        //TODO call round over in main activity? then start new round from there if we dont want user to do it manually
-        if (!roundOver){
-            if(rules.getScore(table.getDealer()) < 17){
-                CardJV drewCard = deck.draw();
-                table.dealCard(false, drewCard);
-                if (checkOver()){ // true = someone has over 21 TODO fix real rules
-                    endRound(rules.getWinner(table.getPlayer(), table.getDealer())); // true = player won
-                }
-                return drewCard;
-            }
-        }
-        return null;
-    }
-
     /**
      * Player stands, dealer draws if rules are satisfied,
      * returns the card drawn by dealer untill he stops drawing, then returns null
@@ -143,10 +126,12 @@ public class GameJV {
             else{
                 boolean under21 = rules.getScore(table.getDealer()) < 21;
                 boolean over16 = rules.getScore(table.getDealer()) > 16;
-                CardJV drew = deck.draw();
-                if(under21 || over16){
+                if(under21 && !over16){
+                    CardJV drew = deck.draw();
                     table.dealCard(false, drew);
-                    checkOver();
+                    if(checkOver()){
+                        endRound(rules.getWinner(table.getPlayer(), table.getDealer()));
+                    }
                     return drew;
                 } else{
                     endRound(rules.getWinner(table.getPlayer(), table.getDealer()));
