@@ -75,7 +75,7 @@ public class GameJV {
         if (winner == EndGameState.PLAYER) {
             int bet = table.getCurrentBet();
             table.addMoney(bet*2);
-            balanceText.setText(table.getMoney());
+            balanceText.setText("" + table.getMoney());
             eventCaller.endGame(EndGameState.PLAYER);
         }
         else if(winner == EndGameState.DEALER){
@@ -84,7 +84,7 @@ public class GameJV {
         else{
             int bet = table.getCurrentBet();
             table.addMoney(bet);
-            balanceText.setText(table.getMoney());
+            balanceText.setText("" + table.getMoney());
         }
 
     }

@@ -102,7 +102,10 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
 
         builder.setTitle("Round over")
                 .setMessage(message)
-                .setPositiveButton(android.R.string.yes, null) //ALERT IDK WHAT I DID WITH THE NULL
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
                 //.setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
@@ -189,7 +192,7 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
                 TableJV table = game.getTable();
 
                 //player cards
-                for(int i = 0; i < 1; i++){
+                for(int i = 0; i < 2; i++){
                     setImageToScreen(table.getPlayer(), i, cardLayout,false);
                 }
                 //dealer cards
