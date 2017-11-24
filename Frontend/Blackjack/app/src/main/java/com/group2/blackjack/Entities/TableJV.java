@@ -38,6 +38,10 @@ public class TableJV {
         return money;
     }
 
+    public void setMoney(int money){
+        this.money = money;
+    }
+
 
     public int getCurrentBet() {
         return currentBet;

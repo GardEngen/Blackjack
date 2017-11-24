@@ -7,14 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ButtonBarLayout;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.group2.blackjack.Callbacks.GameOverCallback;
+import com.group2.blackjack.Callbacks.UpdateCardSumCallback;
+import com.group2.blackjack.Communication.RestClient;
 import com.group2.blackjack.Entities.Card;
 import com.group2.blackjack.Entities.CardJV;
 import com.group2.blackjack.Entities.Table;
@@ -25,6 +29,7 @@ import com.group2.blackjack.Game.GameJV;
 import com.group2.blackjack.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -34,10 +39,11 @@ import static java.sql.DriverManager.println;
  * Created by root on 23.11.17.
  */
 
-public class MainActivityJV extends AppCompatActivity implements GameOverCallback {
+public class MainActivityJV extends AppCompatActivity implements GameOverCallback, UpdateCardSumCallback {
 
     private Button splitButton;
     private Button hitButton;
+    private Button submitButton;
     private TextView balance;
     private GameJV game;
     private Button startButton;
@@ -49,6 +55,10 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
     private SeekBar seekBar;
     private TextView betText;
     private float currBet = 0;
+    private TextView playerSum;
+    private TextView dealerSum;
+    private RestClient restClient = new RestClient();
+    private String inputName = "";
 
 
     @Override
@@ -58,6 +68,7 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
 
         splitButton = (Button) findViewById(R.id.splitButton);
         hitButton = (Button) findViewById(R.id.hitButton);
+        submitButton = (Button) findViewById(R.id.submitButton);
         standButton = (Button) findViewById(R.id.standButton);
         balance = (TextView) findViewById(R.id.balanceText);
         startButton = (Button) findViewById(R.id.startButton);
@@ -66,11 +77,14 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
         dealerLayout = (RelativeLayout) findViewById(R.id.dealerCardsLayout);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         betText = (TextView) findViewById(R.id.betText);
+        playerSum = (TextView) findViewById(R.id.playerSum);
+        dealerSum = (TextView) findViewById(R.id.dealerSum);
 
         buttonAction();
 
+        hitButton.setEnabled(false);
+        standButton.setEnabled(false);
         game = new GameJV(balance, this);
-
         game.initGame();
 
         //game.startRound()
@@ -82,6 +96,8 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
         String cardString = game.getTable().getDealer().get(1).toString();
         int id = getResources().getIdentifier(cardString, "drawable", getPackageName());
         backView.setImageResource(id);
+        hitButton.setEnabled(false);
+        standButton.setEnabled(false);
 
         if(winner == EndGameState.PLAYER){
             System.out.println("Player won-----");
@@ -97,17 +113,50 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
         }
     }
 
+    @Override
+    public void updateSum(int player, int dealer, boolean showDealer){
+        playerSum.setText("" + player);
+        if(showDealer){
+            dealerSum.setText("" + dealer);
+        }
+    }
+
     private void  alertBox(String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Round over")
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
                 //.setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+    private void submitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Send highscore");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        inputName = input.getText().toString();
+                        restClient.postScore(inputName, game.getTable().getMoney());
+                        game.getTable().setMoney(500);
+                    }
+                }
+        );
+
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     private void buttonAction() {
@@ -142,6 +191,13 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
 
 
         });
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitDialog();
+            }
+        });
+
         standButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,8 +240,7 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cardLayout.removeAllViews();
-                dealerLayout.removeAllViews();
+                init();
                 numbersOfPlayerHits = 1;
 
                 game.startRound((int) currBet);
@@ -200,6 +255,15 @@ public class MainActivityJV extends AppCompatActivity implements GameOverCallbac
                 setImageToScreen(table.getDealer(), 1, dealerLayout,true);
             }
         });
+    }
+
+    private void init() {
+        cardLayout.removeAllViews();
+        dealerLayout.removeAllViews();
+        playerSum.setText("");
+        dealerSum.setText("");
+        hitButton.setEnabled(true);
+        standButton.setEnabled(true);
     }
 
     private void setImageToScreen(List<CardJV> cards , int i, RelativeLayout layout, boolean showBackground) {
