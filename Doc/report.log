@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2017.11.13)  21 NOV 2017 16:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2017.11.13)  24 NOV 2017 19:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -479,7 +479,11 @@ Package: listings 2015/06/04 1.6 (Carsten Heinz)
 
 (c:/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-) (./report.aux)
+) (./report.aux
+
+LaTeX Warning: Label `fig:inferred return type' multiply defined.
+
+)
 \openout1 = `report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
@@ -495,8 +499,7 @@ LaTeX Font Info:    ... okay on input line 37.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
 LaTeX Font Info:    ... okay on input line 37.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 37.
-
-(c:/texlive/2017/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+ (c:/texlive/2017/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (c:/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -629,19 +632,14 @@ Package pdftex.def Info: figs/framework.png  used on input line 14. on input li
 ne 14.
 Package pdftex.def Info: Requested size: 217.53215pt x 159.2345pt on input line
  14.
-Missing character: There is no â in font ptmb7t!
-Missing character: There is no € in font ptmb7t!
-Missing character: There is no ¢ in font ptmb7t!
-[2 <./figs/framework.png>]
-Missing character: There is no â in font ptmb7t!
-Missing character: There is no € in font ptmb7t!
-Missing character: There is no ¢ in font ptmb7t!
-Missing character: There is no â in font ptmb7t!
-Missing character: There is no € in font ptmb7t!
-Missing character: There is no ¢ in font ptmb7t!
-Missing character: There is no â in font ptmb7t!
-Missing character: There is no € in font ptmb7t!
-Missing character: There is no ¢ in font ptmb7t!
+<figs/InferredReturnType.png, id=13, 159.09438pt x 31.61812pt>
+File: figs/InferredReturnType.png Graphic file (type png)
+<use figs/InferredReturnType.png>
+Package pdftex.def Info: figs/InferredReturnType.png  used on input line 21. on
+ input line 21.
+Package pdftex.def Info: Requested size: 159.09396pt x 31.61803pt on input line
+ 21.
+[2 <./figs/framework.png> <./figs/InferredReturnType.png>]
 Missing character: There is no â in font ptmb7t!
 Missing character: There is no € in font ptmb7t!
 Missing character: There is no ¢ in font ptmb7t!
@@ -657,34 +655,53 @@ Missing character: There is no ¢ in font ptmb7t!
 Missing character: There is no â in font ptmb7t!
 Missing character: There is no € in font ptmb7t!
 Missing character: There is no ¢ in font ptmb7t!
-) (./sections/prototype.tex [3]
-(./code/BoksVolum.java) [4]) (./sections/experiments.tex [5] [6])
-(./sections/conclusion.tex)
+Missing character: There is no â in font ptmb7t!
+Missing character: There is no € in font ptmb7t!
+Missing character: There is no ¢ in font ptmb7t!
+Missing character: There is no â in font ptmb7t!
+Missing character: There is no € in font ptmb7t!
+Missing character: There is no ¢ in font ptmb7t!
+ [3]
+Missing character: There is no â in font ptmb7t!
+Missing character: There is no € in font ptmb7t!
+Missing character: There is no ¢ in font ptmb7t!
+Missing character: There is no â in font ptmb7t!
+Missing character: There is no € in font ptmb7t!
+Missing character: There is no ¢ in font ptmb7t!
+File: figs/InferredReturnType.png Graphic file (type png)
+<use figs/InferredReturnType.png>
+Package pdftex.def Info: figs/InferredReturnType.png  used on input line 81. on
+ input line 81.
+Package pdftex.def Info: Requested size: 159.09396pt x 31.61803pt on input line
+ 81.
+)
+(./sections/prototype.tex [4] (./code/BoksVolum.java))
+(./sections/experiments.tex [5] [6] [7]) (./sections/conclusion.tex)
 No file report.bbl.
-[7] [8] (./report.aux)
+[8] (./report.aux)
 
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 13973 strings out of 492985
- 267544 string characters out of 6136283
- 334702 words of memory out of 5000000
- 17233 multiletter control sequences out of 15000+600000
+ 13988 strings out of 492985
+ 267784 string characters out of 6136283
+ 341702 words of memory out of 5000000
+ 17247 multiletter control sequences out of 15000+600000
  35186 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,8n,54p,903b,1501s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,8n,54p,903b,1034s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2017/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/texlive/2017/texmf-dist/fo
 nts/type1/urw/times/utmb8a.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/time
 s/utmr8a.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (8 pages, 207856 bytes).
+Output written on report.pdf (8 pages, 211660 bytes).
 PDF statistics:
- 54 PDF objects out of 1000 (max. 8388607)
+ 56 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 18 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 23 words of extra memory for PDF output out of 10000 (max. 10000000)
 
