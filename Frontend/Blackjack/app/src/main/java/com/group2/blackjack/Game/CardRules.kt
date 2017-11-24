@@ -29,7 +29,6 @@ class CardRules {
             playerScore < dealerScore -> EndGameState.DEALER
             else -> EndGameState.PUSH
         }
-
     }
 
     fun getScore(hand : List<Card>): Int{

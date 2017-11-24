@@ -2,6 +2,7 @@ package com.group2.blackjack.Game
 
 import android.widget.TextView
 import com.group2.blackjack.Callbacks.GameOverCallback
+import com.group2.blackjack.Callbacks.UpdateCardSumCallback
 import com.group2.blackjack.Entities.Card
 import com.group2.blackjack.Entities.Deck
 import com.group2.blackjack.Entities.Table
@@ -11,9 +12,10 @@ import com.group2.blackjack.Enums.EndGameState
 /**
  * Created by raugz on 11/2/2017.
  */
-class Game constructor(tv : TextView, event : GameOverCallback){
+class Game constructor(tv : TextView, event : GameOverCallback, cardSumCallback: UpdateCardSumCallback){
     private var balanceText = tv
     private val eventCaller = event
+    private val callTo = cardSumCallback
     var roundOver = true
     lateinit var rules : CardRules
     lateinit var table : Table
@@ -40,7 +42,6 @@ class Game constructor(tv : TextView, event : GameOverCallback){
         if (checkOver()){
             endRound(rules.getWinner(table.player, table.dealer))
         }
-
         table.placeBet(bet)
         balanceText.text = table.money.toString()
     }
@@ -52,7 +53,8 @@ class Game constructor(tv : TextView, event : GameOverCallback){
     }
 
     private fun endRound(winner : EndGameState) {
-        return when (winner) {
+        callTo.updateSum(rules.getScore(table.player), rules.getScore(table.dealer), true)
+        when (winner) {
             EndGameState.PLAYER -> {
                 val bet = table.currentBet
                 table.addMoney(bet*2)
@@ -76,11 +78,14 @@ class Game constructor(tv : TextView, event : GameOverCallback){
      * should be called every time someone draws, to see if they pop
      */
     private fun checkOver(): Boolean {
-        if (rules.check21(table.player, table.dealer)){
+        return if (rules.check21(table.player, table.dealer)){
             roundOver = true
-            return true
+            true
         }
-        return false
+        else{
+            callTo.updateSum(rules.getScore(table.player), rules.getScore(table.dealer), false)
+            false
+        }
     }
 
     fun playerHit(): Card? {

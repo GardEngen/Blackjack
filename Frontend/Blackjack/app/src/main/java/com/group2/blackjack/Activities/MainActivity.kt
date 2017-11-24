@@ -13,15 +13,23 @@ import android.support.v7.app.AlertDialog
 import com.group2.blackjack.Enums.EndGameState
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import com.group2.blackjack.Callbacks.UpdateCardSumCallback
+import com.group2.blackjack.Game.Game
+import android.R.string.cancel
+import android.content.DialogInterface
+import android.text.InputType
+import android.support.v4.widget.SearchViewCompat.setInputType
+import android.widget.EditText
+import com.group2.blackjack.Communication.RestClient
 
 
-
-class MainActivity : AppCompatActivity(), GameOverCallback {
+class MainActivity : AppCompatActivity(), GameOverCallback, UpdateCardSumCallback{
 
     private lateinit var splitButton : Button
     private lateinit var hitButton : Button
+    private lateinit var submitButton : Button
     private lateinit var balance : TextView
-    private lateinit var game : GameJV
+    private lateinit var game : Game
     private lateinit var startButton : Button
     private lateinit var standButton : Button
     private lateinit var cardLayout : RelativeLayout
@@ -31,6 +39,10 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
     private lateinit var seekBar : SeekBar
     private lateinit var betText : TextView
     private var currBet : Float = 0f
+    private lateinit var playerSum : TextView
+    private lateinit var dealerSum : TextView
+    private val restClient = RestClient()
+    private var inputName = "";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,15 +54,19 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         balance = findViewById(R.id.balanceText) as TextView
         startButton = findViewById(R.id.startButton) as Button
         standButton = findViewById(R.id.standButton) as Button
+        submitButton = findViewById(R.id.submitButton) as Button
         cardLayout = findViewById(R.id.playerCardsLayout) as RelativeLayout
         dealerLayout = findViewById(R.id.dealerCardsLayout) as RelativeLayout
         seekBar = findViewById(R.id.seekBar) as SeekBar
         betText = findViewById(R.id.betText) as TextView
+        playerSum = findViewById(R.id.playerSum) as TextView
+        dealerSum = findViewById(R.id.dealerSum) as TextView
 
         buttonAction()
 
-        game = Game(balance, this)
-
+        hitButton.isEnabled = false
+        standButton.isEnabled = false
+        game = Game(balance, this, this)
         game.initGame()
 
         //game.startRound()
@@ -62,6 +78,8 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         val cardString = game.table.dealer[1].toString()
         val id = resources.getIdentifier(cardString, "drawable", packageName)
         backView.setImageResource(id)
+        hitButton.isEnabled = false
+        standButton.isEnabled = false
 
         when (winner) {
             EndGameState.PLAYER -> {
@@ -79,6 +97,13 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
         }
     }
 
+    override fun updateSum(player: Int, dealer: Int, showDealer: Boolean) {
+        playerSum.text = player.toString()
+        if(showDealer){
+            dealerSum.text = dealer.toString()
+        }
+    }
+
     private fun alertBox(message : String){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
 
@@ -88,6 +113,22 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
                 })
                 //.setIcon(android.R.drawable.ic_dialog_alert)
                 .show()
+    }
+
+    private fun submitDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Send highscore")
+
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("Send") { _, _ ->
+            inputName = input.text.toString()
+            restClient.postScore(inputName, game.table.money)
+            game.table.money = 500}
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+        builder.show()
     }
 
 
@@ -115,6 +156,10 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             val intent = Intent(this, HighscoreActivity::class.java)
             startActivity(intent)
         }
+        submitButton.setOnClickListener{
+            submitDialog()
+        }
+
         standButton.setOnClickListener{
             if (!game.roundOver){
                 var card = game.stand()
@@ -149,8 +194,7 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
 
         //START
         startButton.setOnClickListener{
-            cardLayout.removeAllViews()
-            dealerLayout.removeAllViews()
+            init()
             numbersOfPlayerHits = 1
 
             game.startRound(currBet.toInt())
@@ -164,6 +208,15 @@ class MainActivity : AppCompatActivity(), GameOverCallback {
             setImageToScreen(table.dealer, 0, dealerLayout,false)
             setImageToScreen(table.dealer, 1, dealerLayout,true)
         }
+    }
+
+    private fun init(){
+        cardLayout.removeAllViews()
+        dealerLayout.removeAllViews()
+        playerSum.text = ""
+        dealerSum.text = ""
+        hitButton.isEnabled = true
+        standButton.isEnabled = true
     }
 
     private fun setImageToScreen(cards : List<Card>, i: Int, layout: RelativeLayout, showBackground: Boolean) {

@@ -22,8 +22,8 @@
         android:id="@+id/splitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Split"
-        android:background="@color/colorPrimaryDark"
+        android:text="HighScores"
+        android:background="@color/Indigo"
         app:layout_constraintLeft_toLeftOf="@id/panel"
         app:layout_constraintRight_toRightOf="@id/panel"
         app:layout_constraintHorizontal_bias="0.04"
@@ -33,23 +33,23 @@
 
 
     <Button
-        android:id="@+id/doubleButton"
+        android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Double"
+        android:text="Submit"
         app:layout_constraintLeft_toRightOf="@id/splitButton"
         app:layout_constraintTop_toTopOf="@+id/panel"
         app:layout_constraintBottom_toBottomOf="@id/panel"
         android:layout_margin="10dp"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="@color/Yellow"/>
 
     <Button
         android:id="@+id/hitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hit"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintLeft_toRightOf="@id/doubleButton"
+        android:background="@color/Green"
+        app:layout_constraintLeft_toRightOf="@id/submitButton"
         app:layout_constraintTop_toTopOf="@+id/panel"
         app:layout_constraintBottom_toBottomOf="@id/panel"
         android:layout_margin="10dp"
@@ -70,18 +70,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
+        android:background="@color/Amber"
         app:layout_constraintTop_toBottomOf="@id/panel"
         android:id="@+id/startButton"
-        app:layout_constraintLeft_toRightOf="@+id/balanceText"/>
+        app:layout_constraintRight_toLeftOf="@id/submitButton"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your balance: "
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/panel"
+        />
 
     <TextView
         android:id="@+id/balanceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        android:text="500"/>
+        app:layout_constraintBottom_toTopOf="@id/panel"
+        app:layout_constraintLeft_toRightOf="@+id/balance"
+        android:text="500"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20dp"/>
 
   <RelativeLayout
       android:layout_width="match_parent"
@@ -99,27 +113,61 @@
       app:layout_constraintTop_toTopOf="parent">
   </RelativeLayout>
 
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        style="@style/tallerBarStyle"
+        app:layout_constraintTop_toBottomOf="@id/panel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        android:max="10"
+        />
+
 
     <TextView
         android:id="@+id/betText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/panel"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/seekBar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="1"
+        app:layout_constraintHorizontal_bias="0.9"
+        android:textSize="15dp"
+        android:text="0.0"
+        android:textColor="@color/colorPrimary"
         >
 
     </TextView>
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="150dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/tallerBarStyle"
-        app:layout_constraintTop_toBottomOf="@id/betText"
-        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/playerSum"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:max="10"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintVertical_bias="0.6"
+        android:textSize="30dp"
+        android:textColor="@color/colorPrimary"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dealerSum"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintVertical_bias="0.2"
+        android:textSize="30dp"
+        android:textColor="@color/colorPrimary"
         />
 </android.support.constraint.ConstraintLayout>
