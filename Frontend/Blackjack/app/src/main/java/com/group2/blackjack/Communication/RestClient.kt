@@ -40,19 +40,15 @@ class RestClient() {
 
     fun getTop10() {
         Fuel.get(fullUrl + "top10")
-                .response  { request, response, result ->
-                    when (result) {
-                        is Result.Failure -> {
-                            val jsonInString = String(response.data)
-                            println("FAIL MESSAGEEEE::: " + jsonInString + response.responseMessage)
-                        }
+                .response  { request, response, result -> when (result) {
+                        is Result.Failure -> {}
                         is Result.Success -> {
                             var gson = Gson()
                             val jsonInString = String(response.data)
-                            println("SUCCESS MESSAGEEEE::: " + jsonInString + response.responseMessage)
-                            aCallback!!.getTop10FinishProcess(gson.fromJson(jsonInString, Array<Highscore>::class.java))
+                            aCallback!!.getTop10FinishProcess(
+                                    gson.fromJson(jsonInString, Array<Highscore>::class.java)
+                            )
                         }
                     }
-                }
-    }
+                }}
 }
