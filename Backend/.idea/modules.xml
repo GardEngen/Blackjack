@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Backend.iml" filepath="$PROJECT_DIR$/.idea/modules/Backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Backend_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Backend_main.iml" group="Backend" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Backend_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Backend_test.iml" group="Backend" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Blackjack-Backend_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Blackjack-Backend_main.iml" group="Backend" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Blackjack-Backend_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Blackjack-Backend_test.iml" group="Backend" />
     </modules>
   </component>
 </project>

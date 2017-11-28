@@ -30,7 +30,6 @@ class Deck constructor(){
     }
 
     fun draw() : Card{
-        //TODO set image view
         return cards.removeAt(0)
     }
 

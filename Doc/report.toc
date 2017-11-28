@@ -1,0 +1,31 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {subsection}{\numberline {1.1}Motivation}{2}
+\contentsline {subsection}{\numberline {1.2}Kotlin}{2}
+\contentsline {subsubsection}{\numberline {1.2.1}What is Kotlin?}{2}
+\contentsline {subsubsection}{\numberline {1.2.2}History}{3}
+\contentsline {subsubsection}{\numberline {1.2.3}Functionality}{3}
+\contentsline {paragraph}{•}{3}
+\contentsline {paragraph}{•}{3}
+\contentsline {paragraph}{•}{3}
+\contentsline {paragraph}{•}{3}
+\contentsline {paragraph}{•}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {subsubsection}{\numberline {1.2.4}Where to use Kotlin}{3}
+\contentsline {paragraph}{•}{3}
+\contentsline {paragraph}{•}{4}
+\contentsline {paragraph}{•}{4}
+\contentsline {paragraph}{•}{4}
+\contentsline {subsection}{\numberline {1.3}Kotlin Syntax}{4}
+\contentsline {section}{\numberline {2}Android application (Blackjack)}{5}
+\contentsline {subsection}{\numberline {2.1}Functionality}{5}
+\contentsline {subsection}{\numberline {2.2}Tools and frameworks}{5}
+\contentsline {subsection}{\numberline {2.3}Implementation}{6}
+\contentsline {subsubsection}{\numberline {2.3.1}Possibly many subpoints of our different modules}{6}
+\contentsline {section}{\numberline {3}Experiment results and comaprison to java}{6}
+\contentsline {subsection}{\numberline {3.1}The switch from Java to Kotlin}{6}
+\contentsline {subsection}{\numberline {3.2}Ease of development}{8}
+\contentsline {subsection}{\numberline {3.3}Boilerplate code}{8}
+\contentsline {subsection}{\numberline {3.4}Documentation}{8}
+\contentsline {subsection}{\numberline {3.5}Comparison to Java}{8}
+\contentsline {subsubsection}{\numberline {3.5.1}Possibly many subsections here, guys.}{8}
+\contentsline {section}{\numberline {4}Conclusions}{8}

@@ -1,0 +1,98 @@
+\section{Experiment results and comparison to java}
+\label{sec:experiments}
+
+About 3 pages that:
+
+\begin{description}
+
+\item[Describes] the software used to establish the test-bed and for implementing the demonstrator prototype.
+\\
+Testbed and software for implementing the prototype: frameworks mentioned in 2.2 (TODO revisit this once 2.2 is written)
+
+
+\item[Explains] what experiments have been done and the results.
+
+\end{description}
+
+For some reports you may have to include a table with experimental
+results are other kinds of tables that for instance compares
+technologies. Table~\ref{tab:results} gives an example of how to create a table.
+
+\begin{table}
+\centering
+\begin{tabular}{llrrrrrr}
+  Config & Property & States & Edges & Peak & E-Time & C-Time & T-Time
+  \\ \hline \hline
+22-2 & A   &    7,944  &   22,419  &  6.6  \%  &  7 ms & 42.9\% &  485.7\% \\   
+22-2 & A   &    7,944  &   22,419  &  6.6  \%  &  7 ms & 42.9\% &  471.4\% \\   
+30-2 & B   &   14,672  &   41,611  &  4.9  \%  & 14 ms & 42.9\% &  464.3\% \\   
+30-2 & C   &   14,672  &   41,611  &  4.9  \%  & 15 ms & 40.0\% &  420.0\% \\ \hline
+10-3 & D   &   24,052  &   98,671  & 19.8  \%  & 35 ms & 31.4\% &  285.7\% \\   
+10-3 & E   &   24,052  &   98,671  & 19.8  \%  & 35 ms & 34.3\% &  308.6\% \\
+\hline \hline
+\end{tabular}
+\caption{Selected experimental results on the communication protocol example.}
+\label{tab:results}
+\end{table}
+
+\subsection{The switch from Java to Kotlin}
+As developers with a background mainly based on java-development, we had to alter most of the habits associated with developing generic java code. T	he most notable change when developing Kotlin copared to java was probably type declarations. whenever you were going to declare a variable, you could quickly find yourself trying to figure out what type it would be, so that you can declare the type of the variable. This is not necessary, as Kotlin only uses var/val when declaring a variable, where the type will be implicit from the type of what the variable is set to. TODO mention lateinit, and type declaration of lateinit variables.
+\\
+Another interesting pattern to look at is the appearances of semicolons. Coming from java, you are used to enter a semicolon whenever you have finished a statement. Since the semicolons are optional in Kotlin we've decided to avoid using them. Still, looking back at our code, you can find the occasional semicolon on lines where our java-habits likely kicked in.\\
+Something that ma have had us hold on to java-practices may be the fact that the language is fully compatible with java, and you can use java-Classes wherever you want to. A result of this is you often end up writing lines exactly as you would in java. As an example, when you want to sort a list in java you may use:
+\begin{lstlisting} 
+Collections.sort(myList);
+\end{lstlisting}
+This line would be correct in Kotlin as you can import java.util.Collections and use it with your code. You can use your favorite java package wherever you feel like when using Kotlin, which can lead you to miss out on some of the neat functionalities in kotlin.\\
+Fortunately the Android Studio IDE is very helpful when it comes to hints on how to improve your code. Whenever we started writing a nested if-statement, the IDE would offer to convert it to Kotlins {\it When()} syntax. We can take a look at the initial code we wrote for deciding who the winner of a game is, compared to what the IDE altered it to.\\
+The initial Code:
+\begin{lstlisting}
+fun getWinner(player : List<Card>, dealer : List<Card>): EndGameState{
+        val playerScore = getScore(player)
+        val dealerScore = getScore(dealer)
+
+        if(playerScore > 21){
+            return EndGameState.DEALER
+        }
+        else if(dealerScore > 21){
+            return EndGameState.PLAYER
+        }
+        else{
+            if(playerScore > dealerScore) {
+                return EndGameState.PLAYER
+            }
+            else if(playerScore < dealerScore){
+                return EndGameState.DEALER
+            }
+            else{
+                return EndGameState.PUSH
+            }
+        }
+} 
+\end{lstlisting}
+Interesting to note is that this looks a lot like the code in our java-version of the project. However, the IDE advised us to change our Kotlin code to the following format:
+\begin{lstlisting}
+    fun getWinner(player : List<Card>, dealer : List<Card>): EndGameState{
+        val playerScore = getScore(player)
+        val dealerScore = getScore(dealer)
+        
+        return when {
+            playerScore > 21 -> EndGameState.DEALER
+            dealerScore > 21 -> EndGameState.PLAYER
+            else -> when {
+                playerScore > dealerScore -> EndGameState.PLAYER
+                playerScore < dealerScore -> EndGameState.DEALER
+                else -> EndGameState.PUSH
+            }
+        }
+}
+\end{lstlisting}
+This code looks a lot cleaner, and came as a pleasant surprise from the Android Studio IDE. Active advise from the IDE was definitely helpful when converting from java-development to kotlin-development, as it showed us some neat functionality in kotlin.
+\subsection{Ease of development}
+
+\subsection{Boilerplate code}
+
+\subsection{Documentation}
+
+\subsection{Comparison to Java}
+\subsubsection{Possibly many subsections here, guys.}

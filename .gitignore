@@ -1,4 +1,5 @@
-
+Backend/.idea/*
+.idea/*
 .idea/Blackjack.iml
 .idea/compiler.xml
 .idea/copyright/profiles_settings.xml
@@ -57,3 +58,18 @@ Backend/.idea/modules/Backend_main.iml
 
 Backend/.idea/modules/Backend_test.iml
 .idea/vcs.xml
+
+Backend/.idea/compiler.xml
+Backend/.idea/modules.xml
+
+Frontend/Blackjack/.idea/workspace.xml___jb_tmp___
+
+Doc/report.pdf
+
+Doc/report.log
+
+Doc/report.synctex.gz
+
+Doc/report.log
+
+Doc/report.aux
